@@ -7,6 +7,7 @@
         <h1><NuxtLink to="/">Precast Forum</NuxtLink></h1>
         <ListCategory />
       </section>
+
       <ShowAds />
       <main class="list-casts">
         <h3 class="post-main-title">
