@@ -22,33 +22,37 @@
       <div class="show-category">
         <div class="cast-category-page">
           <div class="list-categories">
-            <ul class="list-category-admin">
-              <li>Username</li>
-              <li>Fullname</li>
-              <li>Email Address</li>
-            </ul>
-            <ul
-              v-for="user in users"
-              :key="user.id"
-              class="list-category-admin"
+            <a-table
+              :dataSource="users"
+              :rowKey="
+                (record, index) => {
+                  return index;
+                }
+              "
+              :columns="usersColumns"
+              bordered
+              :pagination="checkPaginate"
             >
-              <li>{{ user.username }}</li>
-              <li>{{ user.name }}</li>
-              <li>{{ user.email }}</li>
-
-              <li>
-                <select name="user-tools" id="1" class="user-tools">
-                  <option value="" selected="" disabled>Select Action</option>
-                  <option value="editProfile">Edit Profile</option>
-                  <option value="role">Change Role</option>
-                  <option value="toggleActivation">Toggle Activation</option>
-                  <option value="assign">Assign</option>
-                  <option value="chart">View Chart</option>
-                  <option value="log">Logs</option>
-                  <option value="changeEmail">Change Email</option>
-                </select>
-              </li>
-            </ul>
+              <template #action="{ record }">
+                {{ record }}
+                <a-select style="width: 150px" @change="selectChange">
+                  <a-select-option value="">Select Action</a-select-option>
+                  <a-select-option value="editProfile"
+                    >Edit Profile</a-select-option
+                  >
+                  <a-select-option value="role">Change Role</a-select-option>
+                  <a-select-option value="toggleActivation"
+                    >Toggle Activation</a-select-option
+                  >
+                  <a-select-option value="assign">Assign</a-select-option>
+                  <a-select-option value="chart">View Chart</a-select-option>
+                  <a-select-option value="log">Logs</a-select-option>
+                  <a-select-option value="changeEmail"
+                    >Change Email</a-select-option
+                  >
+                </a-select>
+              </template>
+            </a-table>
           </div>
         </div>
       </div>
@@ -72,7 +76,30 @@ export default {
   },
   data() {
     return {
+      checkPaginate: false,
       users: [],
+      usersColumns: [
+        {
+          title: "Name",
+          dataIndex: "name",
+          key: "name",
+        },
+        {
+          title: "Username",
+          dataIndex: "username",
+          key: "username",
+        },
+        {
+          title: "Email Address",
+          dataIndex: "email",
+          key: "email",
+        },
+        {
+          title: "Action",
+          key: "action",
+          scopedSlots: { customRender: "action" },
+        },
+      ],
     };
   },
   methods: {
@@ -80,13 +107,16 @@ export default {
       let users = await this.$axios
         .get("http://localhost:8000/api/user")
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res.status === 200) {
             if (res.data.length > 0) {
               this.users = res.data;
             }
           }
         });
+    },
+    selectChange(e) {
+      console.log(e);
     },
   },
   mounted() {

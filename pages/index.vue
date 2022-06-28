@@ -18,7 +18,13 @@
           <Cast v-for="post in posts" :key="post.id" :thisPost="post" />
         </div>
       </main>
-      <section class="pagination"></section>
+      <section class="pagination">
+        <a-pagination
+          :current="current"
+          :total="totalPage"
+          @change="changePage"
+        />
+      </section>
       <ShowAds />
       <footer class="random-posts">
         <div class="disclaimer">
@@ -49,10 +55,15 @@ export default {
     ListCategory,
   },
   data() {
-    return {};
+    return {
+      current: 1,
+    };
   },
 
   computed: {
+    totalPage() {
+      return this.$store.state.totalPage;
+    },
     posts() {
       return this.$store.state.posts;
     },
@@ -61,12 +72,27 @@ export default {
       return this.$store.state.setPostForm;
     },
   },
+  methods: {
+    async changePage(pageNumber) {
+      this.current = pageNumber;
+      // if (pageNumber === 1) {
+      //   pageNumber = 0;
+      // } else {
+      //   pageNumber = pageNumber;
+      // }
+      pageNumber = pageNumber - 1;
+      console.log(pageNumber);
+      this.$store.dispatch("getPostsByPage", pageNumber);
+      // SEND FOR THIS PAGE NUMBER,
+    },
+  },
   mounted() {
     this.$store.dispatch("getPosts");
     this.$store.dispatch("getCategories");
     this.$store.dispatch("removePostForm");
     this.$store.dispatch("setLoginForm", false);
     this.$store.dispatch("setRegisterForm", false);
+    console.log(this.totalPage);
   },
 };
 </script>

@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  name: "ListCategoryAdmin ",
+  name: "ListCategoryAdmin",
   data() {
     return {};
   },

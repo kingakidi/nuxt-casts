@@ -7,6 +7,7 @@ export const state = () => ({
   postContent: "",
   setLoginForm: false,
   setRegisterForm: false,
+  totalPage: 0,
 });
 
 export const getter = {};
@@ -15,7 +16,9 @@ export const mutations = {
   SET_POSTS(state, posts) {
     state.posts = posts;
   },
-
+  SET_PAGE_NUMBER(state, pageNumber) {
+    state.totalPage = pageNumber;
+  },
   SET_POST(state, post) {
     state.post = post;
   },
@@ -42,10 +45,18 @@ export const mutations = {
 export const actions = {
   async getPosts({ commit }) {
     let posts = await IndexRequest.getPosts().then((res) => {
-      commit("SET_POSTS", res.data);
+      commit("SET_POSTS", res.data.posts);
+      commit("SET_PAGE_NUMBER", res.data.totalPages);
     });
 
     return posts;
+  },
+
+  async getPostsByPage({ commit }, pageNumber) {
+    let posts = await IndexRequest.getPostsByPage(pageNumber).then((res) => {
+      commit("SET_POSTS", res.data.posts);
+      commit("SET_PAGE_NUMBER", res.data.totalPages);
+    });
   },
   async getPost({ commit }, postId) {
     let post = await IndexRequest.getPost(postId).then((res) => {

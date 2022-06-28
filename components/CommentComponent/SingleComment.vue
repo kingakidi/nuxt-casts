@@ -1,10 +1,10 @@
 <template>
   <div class="single-comment">
-    <p class="commenter"><a href="">wicast345</a></p>
+    <p class="commenter">
+      <a href=""> {{ comment.user_id }} - @ {{ comment.created_at }}</a>
+    </p>
     <p class="comment-text">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, ab
-      corporis minima quis quibusdam nihil, repudiandae quam perspiciatis non
-      autem fugiat architecto animi! Natus commodi modi animi ut, expedita quis?
+      {{ comment.comment }}
     </p>
     <div class="comments-reaction-icons">
       <div class="comment-likes-counts">
@@ -18,7 +18,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["comment"],
+};
 </script>
 
 <style></style>

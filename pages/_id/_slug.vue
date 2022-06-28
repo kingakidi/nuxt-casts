@@ -53,7 +53,8 @@
             </div>
           </div>
           <AddComment />
-          <DisplayComment />
+
+          <DisplayComment :comments="comments" />
         </div>
       </main>
       <section class="pagination"></section>
@@ -87,6 +88,7 @@ export default {
   data() {
     return {
       postId: this.$route.params.id,
+      comments: [],
     };
   },
   computed: {
@@ -94,10 +96,21 @@ export default {
       return this.$store.state.post;
     },
   },
-  methods: {},
+  methods: {
+    async getPostComment() {
+      const response = this.$axios
+        .get(`http://localhost:8000/api/comment/post/${this.$route.params.id}`)
+        .then((res) => {
+          if (res.status === 200) {
+            this.comments = res.data;
+          }
+        });
+    },
+  },
 
   mounted() {
     // console.log();
+    this.getPostComment();
     this.$store.dispatch("getPost", this.postId);
     this.$store.dispatch("removePostForm");
   },

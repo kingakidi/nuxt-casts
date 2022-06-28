@@ -16,6 +16,9 @@ export default {
   getPosts() {
     return apiClient.get("/post");
   },
+  getPostsByPage(pageNumber) {
+    return apiClient.get(`/post?pageNumber=${pageNumber}`);
+  },
   getPost(postId) {
     return apiClient.get(`/post/${postId}`);
   },
