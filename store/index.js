@@ -3,11 +3,15 @@ export const state = () => ({
   posts: [],
   post: [],
   categories: [],
+  adminCategories: [],
   setPostForm: "",
   postContent: "",
   setLoginForm: false,
   setRegisterForm: false,
   totalPage: 0,
+  totalPostPage: 0,
+  current_post_comment: [],
+  totalCategory: 0,
 });
 
 export const getter = {};
@@ -22,8 +26,14 @@ export const mutations = {
   SET_POST(state, post) {
     state.post = post;
   },
+  SET_SINGLE_POST_PAGE_NUMBER(state, totalPostPages) {
+    state.totalPostPage = totalPostPages;
+  },
   SET_CATEGORIES(state, categories) {
     state.categories = categories;
+  },
+  SET_ADMIN_CATEGORY(state, categories) {
+    state.adminCategories = categories;
   },
   SET_POST_FORM(state, postStatus) {
     state.setPostForm = postStatus;
@@ -39,6 +49,16 @@ export const mutations = {
   },
   SET_REGISTER_FORM(state, registerFormState) {
     state.setRegisterForm = registerFormState;
+  },
+
+  SET_CURRENT_POST_COMMENT(state, comments) {
+    state.current_post_comment = comments;
+  },
+  SET_PAGED_COMMENTS(state, comments) {
+    state.current_post_comment = comments;
+  },
+  TOTAL_CATEGORIES(state, total) {
+    state.totalCategory = total;
   },
 };
 
@@ -60,12 +80,20 @@ export const actions = {
   },
   async getPost({ commit }, postId) {
     let post = await IndexRequest.getPost(postId).then((res) => {
-      commit("SET_POST", res.data);
+      // console.log(res.data.totalPostPages);
+      commit("SET_POST", res.data.post);
+      commit("SET_SINGLE_POST_PAGE_NUMBER", res.data.totalPostPages);
     });
   },
   async getCategories({ commit }) {
     return IndexRequest.getCategories().then((res) => {
-      commit("SET_CATEGORIES", res.data);
+      commit("TOTAL_CATEGORIES", res.data.totalPage);
+      commit("SET_CATEGORIES", res.data.category);
+    });
+  },
+  async getPagedCategory({ commit }, page) {
+    return IndexRequest.getPagedCategory(page).then((res) => {
+      commit("SET_ADMIN_CATEGORY", res.data.category);
     });
   },
   async postCategory({ commit, state }, category) {
@@ -87,5 +115,19 @@ export const actions = {
   },
   setPostConent({ commit }, postContent) {
     commit("SET_POST_CONTENT", postContent);
+  },
+
+  //COMMENT ACTIONS
+
+  async getCommentByPostId({ commit }, id) {
+    return IndexRequest.getCommentByPostId(id).then((res) => {
+      commit("SET_CURRENT_POST_COMMENT", res.data.comments);
+    });
+  },
+  async getCommentByPage({ commit }, values) {
+    return IndexRequest.getCommentByPage(values.id, values.page).then((res) => {
+      // COMMIT THE COMMENT MUTATION
+      commit("SET_PAGED_COMMENTS", res.data.comments);
+    });
   },
 };

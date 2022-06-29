@@ -17,7 +17,7 @@
         <div class="display-post">
           <h4 class="post-title">
             {{ thisPost.title }} - By
-            <NuxtLink to="/profile">{{ thisPost.post_user_id }}</NuxtLink>
+            <NuxtLink to="/profile"> {{ thisPost.post_user_id }} </NuxtLink>
           </h4>
           <div class="post-content" v-html="thisPost.content">
             <!-- {{ thisPost.content }} -->
@@ -54,10 +54,17 @@
           </div>
           <AddComment />
 
-          <DisplayComment :comments="comments" />
+          <DisplayComment :comments="comments" :id="thisRouteId" />
         </div>
       </main>
-      <section class="pagination"></section>
+      <section class="pagination">
+        <a-pagination
+          :current="current"
+          :total="totalPage"
+          :pageSize="10"
+          @change="changePage"
+        />
+      </section>
       <ShowAds />
       <Footer />
     </div>
@@ -86,31 +93,34 @@ export default {
     };
   },
   data() {
-    return {
-      postId: this.$route.params.id,
-      comments: [],
-    };
+    return { current: 1, postId: this.$route.params.id, comments: [] };
   },
   computed: {
     thisPost() {
       return this.$store.state.post;
     },
+    totalPage() {
+      return this.$store.state.totalPostPage;
+    },
+    thisRouteId() {
+      return this.$route.params.id;
+    },
   },
   methods: {
-    async getPostComment() {
-      const response = this.$axios
-        .get(`http://localhost:8000/api/comment/post/${this.$route.params.id}`)
-        .then((res) => {
-          if (res.status === 200) {
-            this.comments = res.data;
-          }
-        });
+    async changePage(pageNumber) {
+      this.current = pageNumber;
+
+      pageNumber = pageNumber - 1;
+      console.log(pageNumber);
+      this.$store.dispatch("getCommentByPage", {
+        id: this.thisRouteId,
+        page: pageNumber,
+      });
+      // SEND FOR THIS PAGE NUMBER,
     },
   },
 
   mounted() {
-    // console.log();
-    this.getPostComment();
     this.$store.dispatch("getPost", this.postId);
     this.$store.dispatch("removePostForm");
   },

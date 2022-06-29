@@ -23,15 +23,7 @@ export default {
       return this.$store.state.categories;
     },
   },
-  methods: {
-    // async getAllCategory() {
-    //   let cat = await this.$axios
-    //     .get("http://localhost:8000/api/category")
-    //     .then((res) => {
-    //       this.categories = res.data;
-    //     });
-    // },
-  },
+  methods: {},
   mounted() {
     // this.getAllCategory();
 
@@ -40,5 +32,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

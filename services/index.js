@@ -32,4 +32,17 @@ export default {
   postCategory(newCategory) {
     return apiClient.post("/category", newCategory);
   },
+
+  getCommentByPostId(id) {
+    return apiClient.get(`/comment/post/${id}`);
+  },
+  getCommentByPage(postId, page) {
+    return apiClient.get(`/comment/post/${postId}?page=${page}`);
+  },
+  getCategoryByPage(postId, page) {
+    return apiClient.get(`/comment/post/${postId}?page=${page}`);
+  },
+  getPagedCategory(page) {
+    return apiClient.get(`/category/paged?page=${page}`);
+  },
 };
