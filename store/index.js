@@ -8,8 +8,8 @@ export const state = () => ({
   postContent: "",
   setLoginForm: false,
   setRegisterForm: false,
-  totalPage: 0,
-  totalPostPage: 0,
+  totalPage: 1,
+  totalPostPage: 1,
   current_post_comment: [],
   totalCategory: 0,
 });
@@ -81,7 +81,8 @@ export const actions = {
   async getPost({ commit }, postId) {
     let post = await IndexRequest.getPost(postId).then((res) => {
       // console.log(res.data.totalPostPages);
-      commit("SET_POST", res.data.post);
+      // console.log(res.data);
+      commit("SET_POST", res.data.post[0]);
       commit("SET_SINGLE_POST_PAGE_NUMBER", res.data.totalPostPages);
     });
   },

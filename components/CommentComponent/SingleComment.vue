@@ -1,8 +1,12 @@
 <template>
   <div class="single-comment">
     <p class="commenter">
-      <a href=""> {{ comment.user_id }} - @ {{ comment.created_at }}</a>
+      <a href="">
+        {{ postTitle }} By {{ comment.username }} - @
+        {{ $moment(comment.created_at).fromNow() }}</a
+      >
     </p>
+
     <p class="comment-text">
       {{ comment.comment }}
     </p>
@@ -19,7 +23,7 @@
 
 <script>
 export default {
-  props: ["comment"],
+  props: ["comment", "postTitle"],
 };
 </script>
 

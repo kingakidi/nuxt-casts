@@ -350,8 +350,17 @@ footer {
 }
 
 .post-title {
-  font-weight: bold;
-  margin: 20px 20px 0px 20px;
+  display: flex;
+  background: #646161;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 13px;
+  font-weight: 900;
+  font-size: 18px;
+  color: #fff;
+  border-top-right-radius: 18px;
+  border-bottom-left-radius: 20px;
 }
 
 .post-main-title {
@@ -437,7 +446,14 @@ footer {
 
 .single-comment {
   border-top: 0.5px solid #646161;
-  padding: 20px;
+  /* padding: 20px; */
+  padding-bottom: 20px;
+}
+.comment-text,
+.comments-reaction-icons {
+  margin-left: 20px;
+
+  margin-right: 20px;
 }
 .btn-reactions {
   border: none;
@@ -463,6 +479,30 @@ footer {
   flex-direction: column;
   justify-content: center;
   /* align-items: center; */
+}
+
+.comments-holder:nth-child(even) {
+  background: #eee;
+}
+
+.single-comment .commenter {
+  background-color: #0c0c0c66;
+  align-self: flex-start;
+  justify-self: flex-start;
+  display: flex;
+  padding: 5px 20px;
+}
+
+.commenter {
+  font-weight: 700;
+  color: #fff;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.commenter a,
+.commenter a:hover {
+  color: #fff;
 }
 /* EDIT CATEGORY FORM END  */
 /* END OF REACTIONS STYLING  */

@@ -1,8 +1,14 @@
 <template>
   <div class="display-comment">
     <h5 class="comment-header">Comments</h5>
-    <div v-for="comment in comments" :key="comment.id">
-      <SingleComment :comment="comment" />
+    <div>
+      <div
+        class="comments-holder"
+        v-for="comment in comments"
+        :key="comment.id"
+      >
+        <SingleComment :comment="comment" :postTitle="postTitle" />
+      </div>
     </div>
 
     <!-- {{ comments }} -->
@@ -14,7 +20,7 @@ import SingleComment from "~/components/CommentComponent/SingleComment.vue";
 
 export default {
   components: { SingleComment },
-  props: ["id"],
+  props: ["id", "postTitle"],
   computed: {
     postComments() {
       return this.$store.state.totalPostPage;
@@ -26,7 +32,7 @@ export default {
   mounted() {
     // CALL THE GET COMMENT ACTION
     this.$store.dispatch("getCommentByPostId", this.id);
-    console.log(this.allComments);
+    console.log(this.$store.state.totalPostPage);
   },
 };
 </script>

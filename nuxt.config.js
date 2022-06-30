@@ -32,6 +32,7 @@ export default {
     "@nuxtjs/axios",
     "nuxt-material-design-icons-iconfont",
     "@nuxtjs/auth-next",
+    "@nuxtjs/moment",
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

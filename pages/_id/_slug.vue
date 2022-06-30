@@ -16,8 +16,11 @@
         <HomeHeader />
         <div class="display-post">
           <h4 class="post-title">
-            {{ thisPost.title }} - By
-            <NuxtLink to="/profile"> {{ thisPost.post_user_id }} </NuxtLink>
+            <div>
+              {{ thisPost.title }} - By
+              <NuxtLink to="/profile"> {{ thisPost.username }} </NuxtLink> @
+              {{ $moment(thisPost.created_at).fromNow() }}
+            </div>
           </h4>
           <div class="post-content" v-html="thisPost.content">
             <!-- {{ thisPost.content }} -->
@@ -46,15 +49,13 @@
             <div class="post-by">
               <a href=""
                 >Post By:
-                <NuxtLink to="/profile">{{
-                  thisPost.post_user_id
-                }}</NuxtLink></a
+                <NuxtLink to="/profile">{{ thisPost.username }}</NuxtLink></a
               >
             </div>
           </div>
           <AddComment />
 
-          <DisplayComment :comments="comments" :id="thisRouteId" />
+          <DisplayComment :postTitle="thisPost.title" :id="thisRouteId" />
         </div>
       </main>
       <section class="pagination">
@@ -123,6 +124,7 @@ export default {
   mounted() {
     this.$store.dispatch("getPost", this.postId);
     this.$store.dispatch("removePostForm");
+    console.log(this.thisRouteId);
   },
 };
 </script>
