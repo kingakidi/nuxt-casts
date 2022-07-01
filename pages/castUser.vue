@@ -90,10 +90,16 @@
             <form v-if="setDelete">
               <h3>Delete User Account</h3>
               <div class="form-group cast-form-group">
-                <a-input placeholder="Enter your password " />
+                <a-input
+                  placeholder="Enter your password "
+                  v-model="password"
+                />
+              </div>
+              <div>
+                {{ modalFormError }}
               </div>
               <div class="cast-form-group">
-                <a-button>Submit</a-button>
+                <a-button @click="deleteUserAccount">Submit</a-button>
               </div>
             </form>
           </a-modal>
@@ -326,6 +332,7 @@ export default {
               this.modalFormError = res.data.error;
             } else if (res.data.success !== undefined) {
               this.modalFormError = res.data.success;
+              this.password = "";
               this.getUsers();
             }
           });
@@ -336,14 +343,11 @@ export default {
     async deleteUserAccount() {
       // check for activationa and password
       this.modalFormError = "";
+
       if (this.password.trim().length > 0) {
         let response = await this.$axios
-          .post(
-            `http://localhost:8000/api/user/change_user_role/${this.userObject.id}`,
-            {
-              password: this.password,
-              user_level: this.user_level,
-            }
+          .delete(
+            `http://localhost:8000/api/user/${this.userObject.id}?password=${this.password}`
           )
           .then((res) => {
             if (res.data.error !== undefined) {
