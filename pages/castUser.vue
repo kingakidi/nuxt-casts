@@ -62,23 +62,28 @@
               <h3>Set User Role</h3>
               <div class="form-group cast-form-group">
                 <label for="">Select Role Level </label>
-                <a-select>
+                <a-select v-model="user_level">
                   <a-select-option selected value=""
                     >Select User Role</a-select-option
                   >
-                  <a-select-option value="1">User</a-select-option>
-                  <a-select-option value="3">Editor</a-select-option>
-                  <a-select-option value="5">Moderator</a-select-option>
-                  <a-select-option value="7">Admin</a-select-option>
-                  <a-select-option value="9">Super Admin</a-select-option>
+                  <a-select-option value="user">User</a-select-option>
+                  <a-select-option value="editor">Editor</a-select-option>
+                  <a-select-option value="moderator">Moderator</a-select-option>
+                  <a-select-option value="admin">Admin</a-select-option>
+                  <a-select-option value="super admin"
+                    >Super Admin</a-select-option
+                  >
                 </a-select>
               </div>
 
               <div class="form-group cast-form-group">
                 <a-input placeholder="Enter password" v-model="password" />
               </div>
+              <div>
+                {{ modalFormError }}
+              </div>
               <div class="form-group cast-form-group">
-                <a-button>Submit</a-button>
+                <a-button @click="changeUserLevel">Submit</a-button>
               </div>
             </form>
 
@@ -129,6 +134,7 @@
               <li>Username</li>
               <li>Fullname</li>
               <li>Email Address</li>
+              <li>User Level</li>
               <li>Actions</li>
             </ul>
             <ul
@@ -139,6 +145,7 @@
               <li>{{ user.username }}</li>
               <li>{{ user.name }}</li>
               <li>{{ user.email }}</li>
+              <li>{{ user.user_level }}</li>
 
               <li>
                 <select
@@ -214,6 +221,7 @@ export default {
       ],
       userObject: {},
       activation_status: "",
+      user_level: "",
       modalFormError: "",
     };
   },
@@ -292,6 +300,57 @@ export default {
               this.modalFormError = res.data.error;
             } else if (res.data.success !== undefined) {
               this.modalFormError = res.data.success;
+            }
+          });
+      } else {
+        this.modalFormError = "All fields required";
+      }
+    },
+    async changeUserLevel() {
+      // check for activationa and password
+      this.modalFormError = "";
+      if (
+        this.password.trim().length > 0 &&
+        this.user_level.trim().length > 0
+      ) {
+        let response = await this.$axios
+          .post(
+            `http://localhost:8000/api/user/change_user_role/${this.userObject.id}`,
+            {
+              password: this.password,
+              user_level: this.user_level,
+            }
+          )
+          .then((res) => {
+            if (res.data.error !== undefined) {
+              this.modalFormError = res.data.error;
+            } else if (res.data.success !== undefined) {
+              this.modalFormError = res.data.success;
+              this.getUsers();
+            }
+          });
+      } else {
+        this.modalFormError = "All fields required";
+      }
+    },
+    async deleteUserAccount() {
+      // check for activationa and password
+      this.modalFormError = "";
+      if (this.password.trim().length > 0) {
+        let response = await this.$axios
+          .post(
+            `http://localhost:8000/api/user/change_user_role/${this.userObject.id}`,
+            {
+              password: this.password,
+              user_level: this.user_level,
+            }
+          )
+          .then((res) => {
+            if (res.data.error !== undefined) {
+              this.modalFormError = res.data.error;
+            } else if (res.data.success !== undefined) {
+              this.modalFormError = res.data.success;
+              this.getUsers();
             }
           });
       } else {
