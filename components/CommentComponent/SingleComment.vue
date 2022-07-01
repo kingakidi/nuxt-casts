@@ -17,6 +17,14 @@
         </button>
         <span>1k</span>
       </div>
+      <div>
+        <a-space>
+          <a-button type="primary">Edit</a-button>
+          <a-button type="danger">Delete</a-button>
+          <a-button type="danger">Disabled</a-button>
+          <a-button type="danger"> Suspend User </a-button>
+        </a-space>
+      </div>
     </div>
   </div>
 </template>

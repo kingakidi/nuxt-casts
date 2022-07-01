@@ -13,6 +13,7 @@
         <div class="line"></div>
         <a href="" @click.prevent="setLoginForm">Login</a>
         <div class="line"></div>
+        <nuxt-link to="/category"> Category </nuxt-link>
         <nuxt-link to="/castUser">Users</nuxt-link>
         <div class="line"></div>
         <a href="">logout</a>

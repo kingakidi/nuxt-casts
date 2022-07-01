@@ -53,6 +53,15 @@
               >
             </div>
           </div>
+          <div class="btn-post-actions">
+            <a-space>
+              <a-button type="primary">Edit</a-button>
+              <a-button id="btn-post-front-page"> Send to Front Page </a-button>
+              <a-button type="danger">Delete</a-button>
+              <a-button type="danger">Disabled</a-button>
+              <a-button type="danger"> Suspend User </a-button>
+            </a-space>
+          </div>
           <AddComment />
 
           <DisplayComment :postTitle="thisPost.title" :id="thisRouteId" />
@@ -66,6 +75,7 @@
           @change="changePage"
         />
       </section>
+      <RandomPost />
       <ShowAds />
       <Footer />
     </div>
@@ -78,9 +88,17 @@ import ShowAds from "~/components/Views/ShowAds.vue";
 import AddComment from "~/components/CommentComponent/AddComent.vue";
 import DisplayComment from "~/components/CommentComponent/DisplayComment.vue";
 import ListCategory from "~/components/CategoryComponent/ListCategory.vue";
+import RandomPost from "~/components/PostComponent/RandomPost.vue";
 
 export default {
-  components: { StatsNav, ShowAds, AddComment, DisplayComment, ListCategory },
+  components: {
+    StatsNav,
+    ShowAds,
+    AddComment,
+    DisplayComment,
+    ListCategory,
+    RandomPost,
+  },
   head() {
     return {
       title: this.thisPost.title,

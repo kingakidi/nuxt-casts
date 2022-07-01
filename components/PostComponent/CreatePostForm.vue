@@ -18,7 +18,7 @@
               :key="category.id"
               :value="category.id"
             >
-              {{ capitalizeCategory(category.title) }}
+              {{ category.title }}
             </option>
           </select>
         </div>
@@ -103,10 +103,10 @@ export default {
     setCategory(e) {
       this.postCategory = e.target.value;
     },
-    capitalizeCategory(data) {
-      let newData = data[0].toUpperCase() + data.substring(1);
-      return newData;
-    },
+    // capitalizeCategory(data) {
+    //   let newData = data[0].toUpperCase() + data.substring(1);
+    //   return newData;
+    // },
     generateSlug() {
       // REMOVE DOUBLE SPACE
       let singleSpace = this.postTitle.replace(/  +/g, " ");

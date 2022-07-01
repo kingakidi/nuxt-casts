@@ -26,7 +26,7 @@
           {{ thisPost.title }}
         </NuxtLink>
       </h2>
-      <div class="time-ago">10 mins Ago</div>
+      <div class="time-ago">{{ $moment(thisPost.created_at) }}</div>
     </div>
   </div>
 </template>

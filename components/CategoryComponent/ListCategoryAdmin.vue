@@ -27,17 +27,40 @@
 
       <form class="delete-category-form" v-if="setDeleteCategory">
         <h3>Delete Category</h3>
-        <p>Are you sure you want to delete these category</p>
-        <a-button>Yes</a-button>
+        <a-input placeholder="Enter your password" v-model="password" />
+        <p>
+          Are you sure you want to delete
+          <strong>{{ actionCategoryObject.title }}</strong> category
+        </p>
+        <div>
+          {{ modalFormError }}
+        </div>
+        <a-button @click="deleteCategory">Delete</a-button>
       </form>
 
       <form class="disabled-category-form" v-if="setDisabledCategory">
         <h3>Disabled Category</h3>
+        <a-input placeholder="Enter your password" v-model="password" />
         <p>
-          Are you sure you want to disable this category? <br />
-          Note: once you disabled these category, it won't appear on the
-          category list!
+          Are you sure you want to Disabled
+          <strong>{{ actionCategoryObject.title }} </strong> category
         </p>
+        <div>
+          {{ modalFormError }}
+        </div>
+        <a-button @click="disableCategory">Disable</a-button>
+      </form>
+      <form class="enable-category-form" v-if="setEnableCategory">
+        <h3>Enable Category</h3>
+        <a-input placeholder="Enter your password" v-model="password" />
+        <p>
+          Are you sure you want to Disabled
+          <strong>{{ actionCategoryObject.title }} </strong> category
+        </p>
+        <div>
+          {{ modalFormError }}
+        </div>
+        <a-button @click="enableCategory">Enable</a-button>
       </form>
     </a-modal>
 
@@ -45,6 +68,7 @@
       <ul class="list-category-admin">
         <li>Name</li>
         <li>Date</li>
+        <li>Status</li>
         <li>Action</li>
       </ul>
       <ul
@@ -54,6 +78,7 @@
       >
         <li>{{ category.title }}</li>
         <li>{{ category.created_at }}</li>
+        <li>{{ category.category_status }}</li>
         <li>
           <select
             name="category-action"
@@ -61,7 +86,20 @@
             @change="categoryAction"
           >
             <option value="" selected disabled>Action</option>
-            <option value="disabled">Disabled</option>
+
+            <option
+              v-if="categoryStatus(category.category_status)"
+              value="disabled"
+            >
+              Disabled
+            </option>
+            <option
+              v-if="!categoryStatus(category.category_status)"
+              value="enable"
+            >
+              Enable
+            </option>
+
             <option value="edit">Edit</option>
             <option value="delete">Delete</option>
           </select>
@@ -91,6 +129,8 @@ export default {
       setDeleteCategory: false,
       setDisabledCategory: false,
       setEditCategory: false,
+      setEnableCategory: false,
+      password: "",
       actionCategoryObject: {
         id: "",
         title: "",
@@ -105,8 +145,22 @@ export default {
     totalCategory() {
       return this.$store.state.totalCategory;
     },
+    category_status(status) {
+      if (status === 1 || status === "1") {
+        return "Active";
+      } else {
+        return "Disabled";
+      }
+    },
   },
   methods: {
+    categoryStatus(cat_status) {
+      if (cat_status === 1 || cat_status === "1") {
+        return true;
+      } else {
+        return false;
+      }
+    },
     async changePage(pageNumber) {
       this.current = pageNumber;
       pageNumber = pageNumber - 1;
@@ -118,6 +172,7 @@ export default {
       let actionId = e.target.getAttribute("data-action-id");
       let actionType = e.target.selectedOptions[0].value;
       this.showModal = true;
+      this.modalFormError = "";
       let response = await this.$axios
         .get(`http://localhost:8000/api/category/${actionId}`)
         .then((res) => {
@@ -131,15 +186,25 @@ export default {
         this.setEditCategory = true;
 
         (this.setDeleteCategory = false), (this.setDisabledCategory = false);
+        this.setEnableCategory = false;
 
         // REQUEST FOR THE CATEGORY
         // SET THE EDITING OBJECT
       } else if (actionType === "disabled") {
         this.setEditCategory = false;
-        (this.setDeleteCategory = false), (this.setDisabledCategory = true);
+        this.setEnableCategory = false;
+        this.setDeleteCategory = false;
+        this.setDisabledCategory = true;
       } else if (actionType === "delete") {
         this.setEditCategory = false;
-        (this.setDeleteCategory = true), (this.setDisabledCategory = false);
+        this.setEnableCategory = false;
+        this.setDeleteCategory = true;
+        this.setDisabledCategory = false;
+      } else if (actionType === "enable") {
+        this.setEditCategory = false;
+        this.setEnableCategory = true;
+        this.setDeleteCategory = false;
+        this.setDisabledCategory = false;
       }
       // REQUEST FOR ACTION FORM
     },
@@ -166,6 +231,66 @@ export default {
             console.log(res.data);
           }
         });
+    },
+    async deleteCategory() {
+      this.modalFormError = "";
+      if (this.password.trim().length > 0) {
+        let response = this.$axios
+          .delete(
+            `http://localhost:8000/api/category/${this.actionCategoryObject.id}?password=${this.password}`
+          )
+          .then((res) => {
+            if (res.data.error !== undefined) {
+              this.modalFormError = res.data.error;
+            } else if (res.data.success !== undefined) {
+              this.modalFormError = res.data.success;
+              this.password = "";
+              this.$store.dispatch("getPagedCategory", 0);
+            }
+          });
+      } else {
+        this.modalFormError = "Password fields is required";
+      }
+    },
+    async disableCategory() {
+      this.modalFormError = "";
+      if (this.password.trim().length > 0) {
+        let response = this.$axios
+          .post(
+            `http://localhost:8000/api/category/disable_category/${this.actionCategoryObject.id}?password=${this.password}`
+          )
+          .then((res) => {
+            if (res.data.error !== undefined) {
+              this.modalFormError = res.data.error;
+            } else if (res.data.success !== undefined) {
+              this.modalFormError = res.data.success;
+              this.password = "";
+              this.$store.dispatch("getPagedCategory", 0);
+            }
+          });
+      } else {
+        this.modalFormError = "Password fields is required";
+      }
+    },
+    async enableCategory() {
+      this.modalFormError = "";
+      if (this.password.trim().length > 0) {
+        let response = this.$axios
+          .post(
+            `http://localhost:8000/api/category/enable_category/${this.actionCategoryObject.id}?password=${this.password}`
+          )
+          .then((res) => {
+            if (res.data.error !== undefined) {
+              this.modalFormError = res.data.error;
+            } else if (res.data.success !== undefined) {
+              this.modalFormError = res.data.success;
+              this.password = "";
+              this.$store.dispatch("getPagedCategory", 0);
+            }
+          });
+      } else {
+        this.modalFormError = "Password fields is required";
+      }
     },
   },
   mounted() {

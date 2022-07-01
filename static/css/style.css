@@ -438,6 +438,7 @@ footer {
 }
 .comments-reaction-icons {
   display: flex;
+  flex-direction: column;
 }
 
 .comment-likes-counts {
@@ -502,6 +503,15 @@ footer {
 
 .commenter a,
 .commenter a:hover {
+  color: #fff;
+}
+
+.btn-post-actions {
+  margin: 20px;
+}
+
+#btn-post-front-page {
+  background-color: #0b8235;
   color: #fff;
 }
 /* EDIT CATEGORY FORM END  */

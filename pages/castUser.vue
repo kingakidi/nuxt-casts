@@ -21,8 +21,79 @@
       </div>
       <div class="show-category">
         <div class="cast-category-page">
+          <a-modal
+            :visible="showModal"
+            @ok="closeModal"
+            @cancel="closeModal"
+            title="User Action Modal"
+          >
+            <!-- setToggle: false,
+      setRole: false,
+      setDelete: false,
+      setLog: false,
+      setAssign: false, -->
+            <form v-if="setToggle">
+              <h3>Toggle User Activation</h3>
+              <div class="form-group cast-form-group">
+                <label for="">Select Activation Type</label>
+
+                <a-select name="" id="" v-model="activation_status" required>
+                  <a-select-option value="" disabled selected
+                    >Select Activation</a-select-option
+                  >
+                  <a-select-option value="activate">Activate</a-select-option>
+                  <a-select-option value="deactivate"
+                    >Deactivate</a-select-option
+                  >
+                </a-select>
+              </div>
+              <div class="form-group cast-form-group">
+                <a-input placeholder="Enter your password" v-model="password" />
+              </div>
+              <div>
+                {{ modalFormError }}
+              </div>
+              <div class="form-group cast-form-group">
+                <a-button @click="changeUserActivation">Submit</a-button>
+              </div>
+            </form>
+
+            <form v-if="setRole">
+              <h3>Set User Role</h3>
+              <div class="form-group cast-form-group">
+                <label for="">Select Role Level </label>
+                <a-select>
+                  <a-select-option selected value=""
+                    >Select User Role</a-select-option
+                  >
+                  <a-select-option value="1">User</a-select-option>
+                  <a-select-option value="3">Editor</a-select-option>
+                  <a-select-option value="5">Moderator</a-select-option>
+                  <a-select-option value="7">Admin</a-select-option>
+                  <a-select-option value="9">Super Admin</a-select-option>
+                </a-select>
+              </div>
+
+              <div class="form-group cast-form-group">
+                <a-input placeholder="Enter password" v-model="password" />
+              </div>
+              <div class="form-group cast-form-group">
+                <a-button>Submit</a-button>
+              </div>
+            </form>
+
+            <form v-if="setDelete">
+              <h3>Delete User Account</h3>
+              <div class="form-group cast-form-group">
+                <a-input placeholder="Enter your password " />
+              </div>
+              <div class="cast-form-group">
+                <a-button>Submit</a-button>
+              </div>
+            </form>
+          </a-modal>
           <div class="list-categories">
-            <a-table
+            <!-- <a-table
               :dataSource="users"
               :rowKey="
                 (record, index) => {
@@ -52,7 +123,41 @@
                   >
                 </a-select>
               </template>
-            </a-table>
+            </a-table> -->
+
+            <ul class="list-category-admin">
+              <li>Username</li>
+              <li>Fullname</li>
+              <li>Email Address</li>
+              <li>Actions</li>
+            </ul>
+            <ul
+              v-for="user in users"
+              :key="user.id"
+              class="list-category-admin"
+            >
+              <li>{{ user.username }}</li>
+              <li>{{ user.name }}</li>
+              <li>{{ user.email }}</li>
+
+              <li>
+                <select
+                  name="user-tools"
+                  :data-action-id="user.id"
+                  class="user-tools"
+                  @change="userAction"
+                >
+                  <option value="" selected="" disabled>Select Action</option>
+                  <option value="role">Change Role</option>
+                  <option value="toggleActivation">Toggle Activation</option>
+                  <option value="delete">Delete</option>
+                  <option value="editProfile">Edit Profile</option>
+                  <option value="chart">View Chart</option>
+                  <option value="log">Logs</option>
+                  <option value="changeEmail">Change Email</option>
+                </select>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -76,6 +181,13 @@ export default {
   },
   data() {
     return {
+      password: "",
+      showModal: false,
+      setToggle: false,
+      setRole: false,
+      setDelete: false,
+      setLog: false,
+      setAssign: false,
       checkPaginate: false,
       users: [],
       usersColumns: [
@@ -100,6 +212,9 @@ export default {
           scopedSlots: { customRender: "action" },
         },
       ],
+      userObject: {},
+      activation_status: "",
+      modalFormError: "",
     };
   },
   methods: {
@@ -117,6 +232,71 @@ export default {
     },
     selectChange(e) {
       console.log(e);
+    },
+    closeModal() {
+      this.showModal = false;
+    },
+    async userAction(e) {
+      this.setToggle = false;
+      this.setRole = false;
+      this.setDelete = false;
+      let actionId = e.target.getAttribute("data-action-id");
+      let actionType = e.target.selectedOptions[0].value;
+      this.showModal = true;
+      this.modalFormError = "";
+      let response = await this.$axios
+        .get(`http://localhost:8000/api/user/${actionId}`)
+        .then((res) => {
+          this.userObject = {
+            id: res.data.id,
+            username: res.data.username,
+          };
+        });
+      console.log(actionType, actionId);
+      if (actionType === "role") {
+        // REQUEST FOR THE CATEGORY
+        // SET THE EDITING OBJECT
+        this.setToggle = false;
+        this.setRole = true;
+        this.setDelete = false;
+      } else if (actionType === "toggleActivation") {
+        this.setToggle = true;
+        this.setRole = false;
+        this.setDelete = false;
+      } else if (actionType === "delete") {
+        this.setToggle = false;
+        this.setRole = false;
+        this.setDelete = true;
+      } else if (actionType === "assign") {
+      } else if (actionType === "log") {
+      }
+      // REQUEST FOR ACTION FORM
+    },
+    async changeUserActivation() {
+      // check for activationa and password
+      this.modalFormError = "";
+      if (
+        this.password.trim().length > 0 &&
+        this.activation_status.trim().length > 0
+      ) {
+        let response = await this.$axios
+          .post(
+            `http://localhost:8000/api/user/toggle_activation/${this.userObject.id}`,
+            {
+              password: this.password,
+              activation_status: this.activation_status,
+            }
+          )
+          .then((res) => {
+            if (res.data.error !== undefined) {
+              this.modalFormError = res.data.error;
+            } else if (res.data.success !== undefined) {
+              this.modalFormError = res.data.success;
+            }
+          });
+      } else {
+        this.modalFormError = "All fields required";
+      }
     },
   },
   mounted() {
