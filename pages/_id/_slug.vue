@@ -19,7 +19,10 @@
             <div>
               {{ thisPost.title }} - By
               <NuxtLink to="/profile"> {{ thisPost.username }} </NuxtLink> @
-              {{ $moment(thisPost.created_at).fromNow() }}
+              {{ $moment(thisPost.created_at).fromNow() }} ({{
+                this.$store.state.totalSinglePageViews
+              }}
+              views)
             </div>
           </h4>
           <div class="post-content" v-html="thisPost.content">
@@ -53,16 +56,8 @@
               >
             </div>
           </div>
-          <div class="btn-post-actions">
-            <a-space>
-              <a-button type="primary">Edit</a-button>
-              <a-button id="btn-post-front-page"> Send to Front Page </a-button>
-              <a-button type="danger">Delete</a-button>
-              <a-button type="danger">Disabled</a-button>
-              <a-button type="danger"> Suspend User </a-button>
-            </a-space>
-          </div>
-          <AddComment />
+          <PostModal />
+          <AddComment :thisPost="thisPost" />
 
           <DisplayComment :postTitle="thisPost.title" :id="thisRouteId" />
         </div>
@@ -89,6 +84,7 @@ import AddComment from "~/components/CommentComponent/AddComent.vue";
 import DisplayComment from "~/components/CommentComponent/DisplayComment.vue";
 import ListCategory from "~/components/CategoryComponent/ListCategory.vue";
 import RandomPost from "~/components/PostComponent/RandomPost.vue";
+import PostModal from "~/components/PostComponent/PostModal.vue";
 
 export default {
   components: {
@@ -98,6 +94,7 @@ export default {
     DisplayComment,
     ListCategory,
     RandomPost,
+    PostModal,
   },
   head() {
     return {
@@ -112,7 +109,11 @@ export default {
     };
   },
   data() {
-    return { current: 1, postId: this.$route.params.id, comments: [] };
+    return {
+      current: 1,
+      postId: this.$route.params.id,
+      comments: [],
+    };
   },
   computed: {
     thisPost() {
@@ -130,19 +131,21 @@ export default {
       this.current = pageNumber;
 
       pageNumber = pageNumber - 1;
-      console.log(pageNumber);
+
       this.$store.dispatch("getCommentByPage", {
         id: this.thisRouteId,
         page: pageNumber,
       });
       // SEND FOR THIS PAGE NUMBER,
     },
+    closeModal() {
+      this.showModal = false;
+    },
   },
 
   mounted() {
     this.$store.dispatch("getPost", this.postId);
     this.$store.dispatch("removePostForm");
-    console.log(this.thisRouteId);
   },
 };
 </script>

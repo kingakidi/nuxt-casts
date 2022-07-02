@@ -12,7 +12,9 @@
 
       <ShowAds />
       <main class="list-casts">
-        <h1>Latest News Updates</h1>
+        <h1>
+          Latest News Updates ({{ this.$store.state.totalHomePageViews }} views)
+        </h1>
         <HomeHeader />
         <div class="cast-group">
           <Cast v-for="post in posts" :key="post.id" :thisPost="post" />

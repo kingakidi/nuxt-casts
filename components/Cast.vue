@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="single-cast">
-      <div class="show-action-stats">
+      <!-- <div class="show-action-stats">
         <div class="show-visit">
           <button>
             <span class="material-icons"> visibility </span>
@@ -20,13 +20,13 @@
           </button>
           <span>1.2k</span>
         </div>
-      </div>
+      </div> -->
       <h2 class="cast-header-title">
         <NuxtLink :to="`/${thisPost.id}/${thisPost.slug}`">
           {{ thisPost.title }}
         </NuxtLink>
       </h2>
-      <div class="time-ago">{{ $moment(thisPost.created_at) }}</div>
+      <!-- <div class="time-ago">{{ $moment(thisPost.created_at) }}</div> -->
     </div>
   </div>
 </template>

@@ -30,9 +30,8 @@ export default {
         .then((res) => {
           if (res.status === 201) {
             this.comment = "";
+            this.$store.dispatch("getCommentByPostId", this.$route.params.id);
           }
-
-          console.log(res);
         });
     },
   },

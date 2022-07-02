@@ -23,7 +23,6 @@ export default {
         .get("http://localhost:8000/api/related_post?post_id=15")
         .then((res) => {
           this.randomPosts = res.data;
-          console.log(res.data);
         });
     },
   },

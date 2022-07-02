@@ -12,6 +12,8 @@ export const state = () => ({
   totalPostPage: 1,
   current_post_comment: [],
   totalCategory: 0,
+  totalHomePageViews: 0,
+  totalSinglePageViews: 0,
 });
 
 export const getter = {};
@@ -60,6 +62,12 @@ export const mutations = {
   TOTAL_CATEGORIES(state, total) {
     state.totalCategory = total;
   },
+  SET_SINGLE_PAGE_VIEW(state, total) {
+    state.totalSinglePageViews = total;
+  },
+  SET_HOME_PAGE_VIEW(state, total) {
+    state.totalHomePageViews = total;
+  },
 };
 
 export const actions = {
@@ -67,6 +75,7 @@ export const actions = {
     let posts = await IndexRequest.getPosts().then((res) => {
       commit("SET_POSTS", res.data.posts);
       commit("SET_PAGE_NUMBER", res.data.totalPages);
+      commit("SET_HOME_PAGE_VIEW", res.data.pageViews);
     });
 
     return posts;
@@ -76,14 +85,14 @@ export const actions = {
     let posts = await IndexRequest.getPostsByPage(pageNumber).then((res) => {
       commit("SET_POSTS", res.data.posts);
       commit("SET_PAGE_NUMBER", res.data.totalPages);
+      commit("SET_HOME_PAGE_VIEW", res.data.pageViews);
     });
   },
   async getPost({ commit }, postId) {
     let post = await IndexRequest.getPost(postId).then((res) => {
-      // console.log(res.data.totalPostPages);
-      // console.log(res.data);
       commit("SET_POST", res.data.post[0]);
       commit("SET_SINGLE_POST_PAGE_NUMBER", res.data.totalPostPages);
+      commit("SET_SINGLE_PAGE_VIEW", res.data.pageViews);
     });
   },
   async getCategories({ commit }) {
