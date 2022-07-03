@@ -32,7 +32,6 @@ export default {
   mounted() {
     // CALL THE GET COMMENT ACTION
     this.$store.dispatch("getCommentByPostId", this.id);
-    console.log(this.$store.state.totalPostPage);
   },
 };
 </script>

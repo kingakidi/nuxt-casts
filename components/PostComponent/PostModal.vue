@@ -122,7 +122,28 @@ export default {
     },
 
     // actions functions
-    async frontPage() {},
+    async frontPage() {
+      this.modalFormError = "";
+      //   CHECK PASSWORD FIELD
+      console.log(this.password);
+      if (this.password.trim().length < 1) {
+        this.modalFormError = "Password fields is required";
+      } else {
+        let req = await this.$axios
+          .post(`http://localhost:8000/api/home_page/${this.thisPost.id}`, {
+            password: this.password,
+          })
+          .then((res) => {
+            console.log(res);
+            if (res.data.error !== undefined) {
+              this.modalFormError = res.data.error;
+            } else if (res.data.success !== undefined) {
+              this.modalFormError = res.data.success;
+              this.password = "";
+            }
+          });
+      }
+    },
     async disablePost() {
       this.modalFormError = "";
       //   CHECK PASSWORD FIELD

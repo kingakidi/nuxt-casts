@@ -1,6 +1,7 @@
 import IndexRequest from "~/services/index.js";
 export const state = () => ({
   posts: [],
+  categoryPosts: [],
   post: [],
   categories: [],
   adminCategories: [],
@@ -13,6 +14,8 @@ export const state = () => ({
   current_post_comment: [],
   totalCategory: 0,
   totalHomePageViews: 0,
+  totalCategoryPageView: 0,
+  totalCategoryPage: 0,
   totalSinglePageViews: 0,
 });
 
@@ -24,6 +27,12 @@ export const mutations = {
   },
   SET_PAGE_NUMBER(state, pageNumber) {
     state.totalPage = pageNumber;
+  },
+  SET_CATEGORY_POSTS(state, posts) {
+    state.categoryPosts = posts;
+  },
+  SET_CATEGORY_PAGE_NUMBER(state, pageNumber) {
+    state.totalCategoryPage = pageNumber;
   },
   SET_POST(state, post) {
     state.post = post;
@@ -68,6 +77,9 @@ export const mutations = {
   SET_HOME_PAGE_VIEW(state, total) {
     state.totalHomePageViews = total;
   },
+  SET_CATEGORY_PAGE_VIEW(state, total) {
+    state.totalCategoryPageView = total;
+  },
 };
 
 export const actions = {
@@ -81,11 +93,32 @@ export const actions = {
     return posts;
   },
 
+  async getCategoryPosts({ commit }, id) {
+    let posts = await IndexRequest.getCategoryPosts(id).then((res) => {
+      commit("SET_CATEGORY_POSTS", res.data.posts);
+      commit("SET_CATEGORY_PAGE_NUMBER", res.data.totalPages);
+      commit("SET_CATEGORY_PAGE_VIEW", res.data.pageViews);
+    });
+
+    return posts;
+  },
+
   async getPostsByPage({ commit }, pageNumber) {
     let posts = await IndexRequest.getPostsByPage(pageNumber).then((res) => {
       commit("SET_POSTS", res.data.posts);
       commit("SET_PAGE_NUMBER", res.data.totalPages);
       commit("SET_HOME_PAGE_VIEW", res.data.pageViews);
+    });
+  },
+
+  async getCategoryByPage({ commit }, data) {
+    let posts = await IndexRequest.getCategoryPaged(
+      data.id,
+      data.pageNumber
+    ).then((res) => {
+      commit("SET_CATEGORY_POSTS", res.data.posts);
+      commit("SET_CATEGORY_PAGE_NUMBER", res.data.totalPages);
+      commit("SET_CATEGORY_PAGE_VIEW", res.data.pageViews);
     });
   },
   async getPost({ commit }, postId) {

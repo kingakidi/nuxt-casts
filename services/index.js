@@ -16,8 +16,14 @@ export default {
   getPosts() {
     return apiClient.get("/post");
   },
+  getCategoryPosts(id) {
+    return apiClient.get(`/post/category/${id}`);
+  },
   getPostsByPage(pageNumber) {
     return apiClient.get(`/post?pageNumber=${pageNumber}`);
+  },
+  getCategoryPaged(id, pageNumber) {
+    return apiClient.get(`/post/category/${id}?pageNumber=${pageNumber}`);
   },
   getPost(postId) {
     return apiClient.get(`/post/${postId}`);

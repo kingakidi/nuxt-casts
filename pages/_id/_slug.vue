@@ -4,7 +4,12 @@
 
     <div class="wrapper" id="wrapper">
       <section class="list-home-categories">
-        <h1><NuxtLink to="/">Precast Forum</NuxtLink></h1>
+        <h1>
+          <NuxtLink to="/">Precast Forum</NuxtLink> /
+          <NuxtLink :to="`/category/${postCategory.id}`">
+            {{ categoryTitle[0].toUpperCase() + categoryTitle.substring(1) }}
+          </NuxtLink>
+        </h1>
         <ListCategory />
       </section>
 
@@ -113,6 +118,10 @@ export default {
       current: 1,
       postId: this.$route.params.id,
       comments: [],
+      postCategory: {
+        id: "",
+        title: " ",
+      },
     };
   },
   computed: {
@@ -124,6 +133,9 @@ export default {
     },
     thisRouteId() {
       return this.$route.params.id;
+    },
+    categoryTitle() {
+      return this.postCategory.title;
     },
   },
   methods: {
@@ -141,11 +153,21 @@ export default {
     closeModal() {
       this.showModal = false;
     },
+    filterCategoryTitle() {
+      this.$store.state.categories.forEach((element) => {
+        if (element.id === Number(this.thisPost.category_id)) {
+          this.postCategory = element;
+        }
+      });
+    },
   },
 
   mounted() {
     this.$store.dispatch("getPost", this.postId);
     this.$store.dispatch("removePostForm");
+
+    this.filterCategoryTitle();
+    console.log(this.$store.state.totalPostPage);
   },
 };
 </script>
