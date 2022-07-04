@@ -2,7 +2,7 @@ import axios from "axios";
 
 const apiClient = axios.create({
   baseURL: "http://localhost:8000/api",
-  withCredentials: false,
+  withCredentials: true,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -49,6 +49,6 @@ export default {
     return apiClient.get(`/comment/post/${postId}?page=${page}`);
   },
   getPagedCategory(page) {
-    return apiClient.get(`/category/paged?page=${page}`);
+    return apiClient.get(`/category/c/paged?page=${page}`);
   },
 };

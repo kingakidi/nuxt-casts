@@ -10,7 +10,11 @@
         <h3>Delete Post</h3>
         <p>Are you sure you want to delete this post?</p>
         <div class="form-group cast-form-group">
-          <a-input placeholder="Enter your password " v-model="password" />
+          <a-input
+            type="password"
+            placeholder="Enter your password "
+            v-model="password"
+          />
         </div>
         <div>
           {{ modalFormError }}
@@ -28,7 +32,11 @@
           >?
         </p>
         <div class="form-group cast-form-group">
-          <a-input placeholder="Enter your password " v-model="password" />
+          <a-input
+            type="password"
+            placeholder="Enter your password "
+            v-model="password"
+          />
         </div>
         <div>
           {{ modalFormError }}
@@ -43,7 +51,11 @@
         <h3>Suspend User</h3>
         <p>Are you sure you want to Disable this post?</p>
         <div class="form-group cast-form-group">
-          <a-input placeholder="Enter your password " v-model="password" />
+          <a-input
+            type="password"
+            placeholder="Enter your password "
+            v-model="password"
+          />
         </div>
         <div>
           {{ modalFormError }}
@@ -58,7 +70,11 @@
         <h3>SEND POST TO FRONT PAGE</h3>
         <p>Are you sure you want to send this post to front page?</p>
         <div class="form-group cast-form-group">
-          <a-input placeholder="Enter your password " v-model="password" />
+          <a-input
+            type="password"
+            placeholder="Enter your password "
+            v-model="password"
+          />
         </div>
         <div>
           {{ modalFormError }}
@@ -68,21 +84,36 @@
         </div>
       </form>
     </a-modal>
-    <a-space>
-      <a-button type="primary">Edit</a-button>
-      <a-button id="btn-post-front-page" @click="setFrontPage(thisPost.id)">
-        Send to Front Page
-      </a-button>
-      <a-button type="danger" @click="setDeletePost(thisPost.id)"
-        >Delete</a-button
+    <!-- v-if="
+        this.$auth.user.user_level === 'editor' ||
+        this.$auth.user.user_level === 'admin' ||
+        this.$auth.user.user_level === 'super admin'
+      " -->
+
+    <div v-if="this.$auth.loggedIn">
+      <div
+        v-if="
+          (this.$auth.loggedIn && this.$auth.user.user_level === 'auditor') ||
+          this.$auth.user.user_level === 'auditor' ||
+          this.$auth.user.user_level === 'admin' ||
+          this.$auth.user.user_level === 'super admin'
+        "
       >
-      <a-button type="danger" @click="setDisablePost(thisPost.id)"
-        >Disabled</a-button
-      >
-      <a-button type="danger" @click="setSuspendUser(thisPost.id)">
-        Suspend User
-      </a-button>
-    </a-space>
+        <a-button type="primary">Edit</a-button>
+        <a-button id="btn-post-front-page" @click="setFrontPage(thisPost.id)">
+          Send to Front Page
+        </a-button>
+        <a-button type="danger" @click="setDeletePost(thisPost.id)"
+          >Delete</a-button
+        >
+        <a-button type="danger" @click="setDisablePost(thisPost.id)"
+          >Disabled</a-button
+        >
+        <a-button type="danger" @click="setSuspendUser(thisPost.id)">
+          Suspend User
+        </a-button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -125,16 +156,15 @@ export default {
     async frontPage() {
       this.modalFormError = "";
       //   CHECK PASSWORD FIELD
-      console.log(this.password);
+
       if (this.password.trim().length < 1) {
         this.modalFormError = "Password fields is required";
       } else {
         let req = await this.$axios
-          .post(`http://localhost:8000/api/home_page/${this.thisPost.id}`, {
+          .post(`/home_page/${this.thisPost.id}`, {
             password: this.password,
           })
           .then((res) => {
-            console.log(res);
             if (res.data.error !== undefined) {
               this.modalFormError = res.data.error;
             } else if (res.data.success !== undefined) {
@@ -147,16 +177,13 @@ export default {
     async disablePost() {
       this.modalFormError = "";
       //   CHECK PASSWORD FIELD
-      console.log(this.password);
+
       if (this.password.trim().length < 1) {
         this.modalFormError = "Password fields is required";
       } else {
         let req = await this.$axios
-          .post(
-            `http://localhost:8000/api/disable_post/${this.thisPost.id}?password=${this.password}`
-          )
+          .post(`/disable_post/${this.thisPost.id}?password=${this.password}`)
           .then((res) => {
-            console.log(res);
             if (res.data.error !== undefined) {
               this.modalFormError = res.data.error;
             } else if (res.data.success !== undefined) {
@@ -169,16 +196,13 @@ export default {
     async deletePost() {
       this.modalFormError = "";
       //   CHECK PASSWORD FIELD
-      console.log(this.password);
+
       if (this.password.trim().length < 1) {
         this.modalFormError = "Password fields is required";
       } else {
         let req = await this.$axios
-          .delete(
-            `http://localhost:8000/api/post/${this.thisPost.id}?password=${this.password}`
-          )
+          .delete(`/post/${this.thisPost.id}?password=${this.password}`)
           .then((res) => {
-            console.log(res);
             if (res.data.error !== undefined) {
               this.modalFormError = res.data.error;
             } else if (res.data.success !== undefined) {
@@ -191,19 +215,16 @@ export default {
     async suspendUser() {
       this.modalFormError = "";
       //   CHECK PASSWORD FIELD
-      console.log(this.password);
+
       if (this.password.trim().length < 1) {
         this.modalFormError = "Password fields is required";
       } else {
         let req = await this.$axios
-          .post(
-            `http://localhost:8000/api/user/suspend_user/${this.thisPost.username}`,
-            {
-              password: this.password,
-              username: this.thisPost.username,
-              activation_status: "deactivate",
-            }
-          )
+          .post(`/user/suspend_user/${this.thisPost.username}`, {
+            password: this.password,
+            username: this.thisPost.username,
+            activation_status: "deactivate",
+          })
           .then((res) => {
             if (res.data.error !== undefined) {
               this.modalFormError = res.data.error;

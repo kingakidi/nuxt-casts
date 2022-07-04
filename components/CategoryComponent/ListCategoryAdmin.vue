@@ -27,7 +27,11 @@
 
       <form class="delete-category-form" v-if="setDeleteCategory">
         <h3>Delete Category</h3>
-        <a-input placeholder="Enter your password" v-model="password" />
+        <a-input
+          type="password"
+          placeholder="Enter your password"
+          v-model="password"
+        />
         <p>
           Are you sure you want to delete
           <strong>{{ actionCategoryObject.title }}</strong> category
@@ -40,7 +44,11 @@
 
       <form class="disabled-category-form" v-if="setDisabledCategory">
         <h3>Disabled Category</h3>
-        <a-input placeholder="Enter your password" v-model="password" />
+        <a-input
+          type="password"
+          placeholder="Enter your password"
+          v-model="password"
+        />
         <p>
           Are you sure you want to Disabled
           <strong>{{ actionCategoryObject.title }} </strong> category
@@ -52,7 +60,11 @@
       </form>
       <form class="enable-category-form" v-if="setEnableCategory">
         <h3>Enable Category</h3>
-        <a-input placeholder="Enter your password" v-model="password" />
+        <a-input
+          type="password"
+          placeholder="Enter your password"
+          v-model="password"
+        />
         <p>
           Are you sure you want to Disabled
           <strong>{{ actionCategoryObject.title }} </strong> category
@@ -174,14 +186,14 @@ export default {
       this.showModal = true;
       this.modalFormError = "";
       let response = await this.$axios
-        .get(`http://localhost:8000/api/category/${actionId}`)
+        .get(`/category/${actionId}`)
         .then((res) => {
           this.actionCategoryObject = {
             id: res.data.id,
             title: res.data.title,
           };
         });
-      console.log(actionType, actionId);
+
       if (actionType === "edit") {
         this.setEditCategory = true;
 
@@ -214,10 +226,9 @@ export default {
     editCategory() {
       this.modalFormError = "";
       let update = this.$axios
-        .put(
-          `http://localhost:8000/api/category/${this.actionCategoryObject.id}`,
-          { title: this.actionCategoryObject.title }
-        )
+        .put(`/category/${this.actionCategoryObject.id}`, {
+          title: this.actionCategoryObject.title,
+        })
         .then((res) => {
           if (res.data.error !== undefined) {
             if (res.data.error.title !== undefined) {
@@ -228,7 +239,6 @@ export default {
               this.modalFormError = res.data.message;
               this.$store.dispatch("getPagedCategory", 0);
             }
-            console.log(res.data);
           }
         });
     },
@@ -237,7 +247,7 @@ export default {
       if (this.password.trim().length > 0) {
         let response = this.$axios
           .delete(
-            `http://localhost:8000/api/category/${this.actionCategoryObject.id}?password=${this.password}`
+            `/category/${this.actionCategoryObject.id}?password=${this.password}`
           )
           .then((res) => {
             if (res.data.error !== undefined) {
@@ -257,7 +267,7 @@ export default {
       if (this.password.trim().length > 0) {
         let response = this.$axios
           .post(
-            `http://localhost:8000/api/category/disable_category/${this.actionCategoryObject.id}?password=${this.password}`
+            `/category/disable_category/${this.actionCategoryObject.id}?password=${this.password}`
           )
           .then((res) => {
             if (res.data.error !== undefined) {
@@ -277,7 +287,7 @@ export default {
       if (this.password.trim().length > 0) {
         let response = this.$axios
           .post(
-            `http://localhost:8000/api/category/enable_category/${this.actionCategoryObject.id}?password=${this.password}`
+            `/category/enable_category/${this.actionCategoryObject.id}?password=${this.password}`
           )
           .then((res) => {
             if (res.data.error !== undefined) {

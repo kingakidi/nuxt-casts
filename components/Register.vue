@@ -9,7 +9,7 @@
     >
       <h2 class="cast-register-title">Register an account</h2>
       <div class="cast-group">
-        <input
+        <a-input
           type="text"
           class="cast-input"
           placeholder="Username"
@@ -21,7 +21,7 @@
       </div>
 
       <div class="cast-group">
-        <input
+        <a-input
           type="email"
           name="email"
           id="email"
@@ -31,7 +31,7 @@
         />
       </div>
       <div class="cast-group">
-        <input
+        <a-input
           type="text"
           name="fullname"
           id="fullname"
@@ -41,18 +41,18 @@
         />
       </div>
       <div class="cast-group">
-        <input
+        <a-input
           type="password"
           class="cast-input"
           placeholder="Password"
           v-model="registerData.password"
         />
       </div>
-      <div class="cast-group">
-        <input type="submit" value="Register" class="cast-input" />
-      </div>
       <div v-if="error">
         {{ error }}
+      </div>
+      <div class="cast-group">
+        <input type="submit" value="Register" class="cast-input" />
       </div>
     </form>
   </div>
@@ -80,23 +80,37 @@ export default {
     checkUsername() {},
     registerUser() {
       //   CHECK ALL FIELDS IS FILLED
-
+      this.error = "";
       if (
         this.registerData.username !== "" ||
         this.registerData.email !== "" ||
         this.registerData.fullname !== "" ||
         this.registerData.password !== ""
       ) {
-        this.$axios
-          .post("http://localhost:8000/api/user", {
-            username: this.registerData.username,
-            email: this.registerData.email,
-            name: this.registerData.fullname,
-            password: this.registerData.password,
-          })
-          .then((res) => {
-            console.log(res);
-          });
+        if (/\s/g.test(this.registerData.username)) {
+          this.error = "Username can't contain space";
+        } else if (/^\d/.test(this.registerData.username)) {
+          this.error = "Username can't start with a number";
+        } else if (this.registerData.username.trim().length < 5) {
+          this.error = "Username must be upto 5 character";
+        } else {
+          this.$axios
+            .post("/user", {
+              username: this.registerData.username,
+              email: this.registerData.email,
+              name: this.registerData.fullname,
+              password: this.registerData.password,
+            })
+            .then((res) => {
+              if (res.data.username !== undefined) {
+                this.error = res.data.username[0];
+              } else if (res.data.email !== undefined) {
+                this.error = res.data.email[0];
+              } else if (res.data.message !== undefined) {
+                this.error = res.data.message;
+              }
+            });
+        }
       } else {
         this.error = "All fields required";
       }

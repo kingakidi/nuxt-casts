@@ -22,7 +22,7 @@ export default {
   methods: {
     async addComment() {
       let request = this.$axios
-        .post(`http://localhost:8000/api/comment`, {
+        .post(`/comment`, {
           post_id: this.$route.params.id,
           comment: this.comment,
           user_id: 78,

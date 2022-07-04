@@ -17,8 +17,13 @@
         </button>
         <span>1k</span>
       </div>
-      <div>
-        <a-space>
+      <div v-if="this.$auth.loggedIn">
+        <a-space
+          v-if="
+            this.$auth.user.user_level === 'super admin' ||
+            this.$auth.user.user_level === 'admin'
+          "
+        >
           <a-button type="primary">Edit</a-button>
           <a-button type="danger">Delete</a-button>
           <a-button type="danger">Disabled</a-button>

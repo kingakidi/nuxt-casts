@@ -18,7 +18,7 @@ export default {
   css: ["@/static/css/style.css", "ant-design-vue/dist/antd.css"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ["@/plugins/antd-ui"],
+  plugins: ["@/plugins/antd-ui", "~/plugins/axios"],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -36,9 +36,40 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
+  // axios: {
+  //   // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
+  //   baseURL: "http://localhost:8000/api",
+  // },
   axios: {
-    // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: "/",
+    withCredentials: true,
+    // baseUrl: "http://localhost:8000",
+    baseURL: "http://localhost:8000/api",
+  },
+  proxy: {
+    "/laravel": {
+      target: "https://laravel-auth.nuxtjs.app",
+      pathRewrite: { "^/laravel": "/" },
+    },
+  },
+  auth: {
+    strategies: {
+      laravelSanctum: {
+        provider: "laravel/sanctum",
+        url: "http://localhost:8000",
+        endpoints: {
+          login: { url: "/api/login", method: "post" },
+          logout: { url: "/api/logout", method: "post" },
+        },
+      },
+      local: {
+        url: "http://localhost:8000",
+        endpoints: {
+          login: { url: "/login", method: "post" },
+          logout: { url: "/logout", method: "post" },
+          user: { url: "/login", method: "post" },
+        },
+      },
+    },
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

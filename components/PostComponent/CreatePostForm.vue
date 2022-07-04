@@ -87,13 +87,16 @@ export default {
       postTitle: "",
 
       postFiles: [],
-      categories: [],
+
       errors: "",
     };
   },
   computed: {
     postContent() {
       return this.$store.state.postContent;
+    },
+    categories() {
+      return this.$store.state.categories;
     },
   },
   methods: {
@@ -121,14 +124,11 @@ export default {
       return data.length;
     },
     postFileChange(e) {
-      // console.log(checkFiles);
       // check if file is selected
 
       this.postFiles = this.$refs.postFiles.files;
 
       if (this.postFiles.length > 0) {
-        console.log(this.postFiles[0]);
-
         let allowedExtension = [
           "image/jpeg",
           "image/jpg",
@@ -150,20 +150,15 @@ export default {
 
       //   CHECK IF THE FILES ARE IMAGES, AND THE SIZE ARE NOT MORE THAN 2MB, ELSE , CLEAN AND RESTART
     },
-    async getAllCategory() {
-      let cat = await this.$axios
-        .get("http://localhost:8000/api/category")
-        .then((res) => {
-          this.categories = res.data;
-        });
-    },
+
     createPost() {
       this.errors = "";
-
+      // console.log(this.postContent);
       if (
         this.clean(this.postCategory) > 0 &&
         this.clean(this.postSlug) > 0 &&
-        this.clean(this.postTitle) > 0
+        this.clean(this.postTitle) > 0 &&
+        this.postContent.trim().length > 0
       ) {
         let formData = new FormData();
         formData.append("post_user_id", 1);
@@ -177,23 +172,20 @@ export default {
 
         // CHECK IF ALL FIELD EXCEPT IMAGES
         try {
-          this.$axios
-            .post("http://localhost:8000/api/post", formData)
-            .then((res) => {
-              if (
-                res.status === 201 &&
-                res.statusText.toLowerCase() === "created"
-              ) {
-                this.errors = "Post Created Successfully";
-                this.postTitle = "";
-                this.$store.dispatch("setPostConent", "");
-                this.postSlug = "";
-                this.$refs.postFiles.value = "";
-              } else {
-                this.errors = res.data.statusMessage;
-                console.log(res);
-              }
-            });
+          this.$axios.post("/post", formData).then((res) => {
+            if (
+              res.status === 201 &&
+              res.statusText.toLowerCase() === "created"
+            ) {
+              this.errors = "Post Created Successfully";
+              this.postTitle = "";
+              this.$store.dispatch("setPostConent", "");
+              this.postSlug = "";
+              this.$refs.postFiles.value = "";
+            } else {
+              this.errors = res.data.statusMessage;
+            }
+          });
         } catch (error) {
           console.log(error);
         }
@@ -202,10 +194,7 @@ export default {
       }
     },
   },
-  mounted() {
-    this.getAllCategory();
-    console.log("Mounted");
-  },
+  mounted() {},
 };
 </script>
 

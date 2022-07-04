@@ -2,24 +2,38 @@
   <div>
     <div class="main-header">
       <h2><a href="">Trending Right Now</a></h2>
-      <div class="main-header-group">
+      <div class="main-header-group" v-if="this.$auth.loggedIn">
         <a href="" @click.prevent="setPostForm">Create Post </a>
         <div class="line"></div>
+        <div
+          v-if="
+            this.$auth.user.user_level === 'admin' ||
+            this.$auth.user.user_level === 'super admin'
+          "
+        >
+          <nuxt-link to="/castUser"> Users </nuxt-link>
+          <div class="line"></div>
+          <nuxt-link to="/category"> Category </nuxt-link>
+          <div class="line"></div>
+        </div>
+
         <a href="">My Posts</a>
+
+        <div class="line"></div>
+        <a href="#" @click.prevent="logout">logout</a>
+      </div>
+      <div class="main-header-group" v-if="!this.$auth.loggedIn">
         <div class="line"></div>
         <a href="">All Posts</a>
         <div class="line"></div>
+
         <a href="" @click.prevent="setRegisterForm">Create Account</a>
         <div class="line"></div>
         <a href="" @click.prevent="setLoginForm">Login</a>
-        <div class="line"></div>
-        <nuxt-link to="/category"> Category </nuxt-link>
-        <nuxt-link to="/castUser">Users</nuxt-link>
-        <div class="line"></div>
-        <a href="">logout</a>
       </div>
       <input type="search" name="search" id="seach" placeholder="Search Post" />
     </div>
+
     <CreatePostForm v-if="showCreatePost" />
     <Login v-if="showLoginForm" />
     <Register v-if="showRegisterForm" />
@@ -63,7 +77,19 @@ export default {
       this.$store.dispatch("setPostForm", false);
       this.$store.dispatch("setLoginForm", true);
     },
+    async logout() {
+      try {
+        await this.$auth.logout().then((res) => {
+          console.log(res);
+        });
+        this.$router.push("/");
+      } catch (error) {
+        console.log("This is error", error);
+      }
+      this.$router.push("/login");
+    },
   },
+  mounted() {},
 };
 </script>
 

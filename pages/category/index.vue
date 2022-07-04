@@ -2,7 +2,10 @@
   <div class="">
     <StatsNav />
     <div class="wrapper" id="wrapper">
-      <h1>Category - Precast</h1>
+      <section class="list-home-categories">
+        <h1><NuxtLink to="/">Precast Forum</NuxtLink> / Category</h1>
+        <!-- <ListCategory /> -->
+      </section>
 
       <div class="main-header post-header">
         <!-- <h2><a href="">Trending Right Now</a></h2> -->
@@ -22,7 +25,7 @@
       <div class="show-category">
         <AddCategory v-if="createCategory"> </AddCategory>
 
-        <ListCategoryAdmin v-if="allCategory"> </ListCategoryAdmin>
+        <ListCategoryAdmin> </ListCategoryAdmin>
       </div>
     </div>
   </div>
@@ -34,8 +37,10 @@ import StatsNav from "~/components/Views/StatsNav.vue";
 import CategoryHeader from "~/components/CategoryComponent/CategoryHeader.vue";
 import AddCategory from "~/components/CategoryComponent/AddCategory.vue";
 import ListCategoryAdmin from "~/components/CategoryComponent/ListCategoryAdmin.vue";
+// import ListCategory from "~/components/CategoryComponent/ListCategory.vue";
 
 export default {
+  middleware: "auth",
   components: {
     StatsNav,
     CategoryHeader,
@@ -59,6 +64,13 @@ export default {
     },
   },
   mounted() {
+    // CHECK IF USER IS AN ADMIN
+    if (
+      !this.$auth.user.user_level === "admin" ||
+      !this.$auth.user.user_level === "super admin"
+    ) {
+      this.$router.push("/");
+    }
     this.$store.dispatch("getCategories");
   },
 };

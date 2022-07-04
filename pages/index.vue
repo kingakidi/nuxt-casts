@@ -77,15 +77,30 @@ export default {
   methods: {
     async changePage(pageNumber) {
       this.current = pageNumber;
-      // if (pageNumber === 1) {
-      //   pageNumber = 0;
-      // } else {
-      //   pageNumber = pageNumber;
-      // }
+
       pageNumber = pageNumber - 1;
-      console.log(pageNumber);
+
       this.$store.dispatch("getPostsByPage", pageNumber);
       // SEND FOR THIS PAGE NUMBER,
+    },
+    async loggin() {
+      let response = await this.$auth
+        .loginWith("laravelSanctum", {
+          data: { username: "king", password: "1111" },
+        })
+        .then((res) => {
+          if (res.data.error !== undefined) {
+            console.log(res.data.error);
+            // this.modalFormError = res.data.error;
+          } else if (res.data.success !== undefined) {
+            // this.modalFormError = res.data.success;
+            console.log(res.data.success);
+            this.password = "";
+          } else if (res.data.data !== undefined) {
+            console.log(res.data.data);
+            this.$auth.setUser(this.$auth.user);
+          }
+        });
     },
   },
   mounted() {
@@ -94,7 +109,6 @@ export default {
     this.$store.dispatch("removePostForm");
     this.$store.dispatch("setLoginForm", false);
     this.$store.dispatch("setRegisterForm", false);
-    console.log(this.totalPage);
   },
 };
 </script>

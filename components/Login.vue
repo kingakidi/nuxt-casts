@@ -1,11 +1,11 @@
 <template>
-  <div class="login-container">
+  <div class="login-container" v-if="!this.$auth.loggedIn">
     <button @click="closeLoginForm">Close</button>
     <form
       action=""
       class="login-form cast-form"
       id="login-form"
-      @submit.prevent="loginUser"
+      @submit.prevent="login"
     >
       <h2 class="cast-login-title">Login</h2>
       <div class="cast-group">
@@ -47,28 +47,50 @@ export default {
     closeLoginForm() {
       return this.$store.dispatch("setLoginForm", false);
     },
-    async loginUser() {
+
+    async logIn() {
+      let response = await this.$auth
+        .loginWith("local", {
+          data: {
+            username: this.loginData.username,
+            password: this.loginData.password,
+          },
+        })
+        .then((res) => {});
+    },
+    async login() {
       this.error = "";
-
-      // CHECK ALL FIELDS
-      if (this.loginData.username !== "" && this.loginData.password !== "") {
-        let loginRequest = await this.$axios
-          .post("http://localhost:8000/api/login", this.loginData)
+      try {
+        let response = await this.$auth
+          .loginWith("local", {
+            data: {
+              username: this.loginData.username,
+              password: this.loginData.password,
+            },
+          })
           .then((res) => {
-            if (res.data.error !== "undefined") {
+            if (res.data.error !== undefined) {
               this.error = res.data.error;
-            } else {
-              console.log(res);
-            }
 
-            if (res.data.success !== "undefined") {
-              this.error = res.data.success;
+              // this.modalFormError = res.data.error;
+            } else if (res.data.success !== undefined) {
+              // this.modalFormError = res.data.success;
+
+              let response1 = this.$auth
+                .loginWith("laravelSanctum", {
+                  data: {
+                    username: this.loginData.username,
+                    password: this.loginData.password,
+                  },
+                })
+                .then((res) => {});
+            } else if (res.data.data !== undefined) {
+              this.$auth.setUser(this.$auth.user);
             }
           });
-      } else {
-        this.error = "All fields required ";
+      } catch (error) {
+        // console.log(error);
       }
-      // SEND
     },
   },
 };

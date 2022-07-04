@@ -62,7 +62,7 @@
             </div>
           </div>
           <PostModal />
-          <AddComment :thisPost="thisPost" />
+          <AddComment v-if="this.$auth.loggedIn" :thisPost="thisPost" />
 
           <DisplayComment :postTitle="thisPost.title" :id="thisRouteId" />
         </div>

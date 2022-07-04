@@ -2,7 +2,10 @@
   <div class="">
     <StatsNav />
     <div class="wrapper" id="wrapper">
-      <h1>Category - Precast</h1>
+      <section class="list-home-categories">
+        <h1><NuxtLink to="/">Precast Forum</NuxtLink> / List of Users</h1>
+        <ListCategory />
+      </section>
 
       <div class="main-header post-header">
         <!-- <h2><a href="">Trending Right Now</a></h2> -->
@@ -48,7 +51,11 @@
                 </a-select>
               </div>
               <div class="form-group cast-form-group">
-                <a-input placeholder="Enter your password" v-model="password" />
+                <a-input
+                  type="password"
+                  placeholder="Enter your password"
+                  v-model="password"
+                />
               </div>
               <div>
                 {{ modalFormError }}
@@ -77,7 +84,11 @@
               </div>
 
               <div class="form-group cast-form-group">
-                <a-input placeholder="Enter password" v-model="password" />
+                <a-input
+                  type="password"
+                  placeholder="Enter password"
+                  v-model="password"
+                />
               </div>
               <div>
                 {{ modalFormError }}
@@ -91,6 +102,7 @@
               <h3>Delete User Account</h3>
               <div class="form-group cast-form-group">
                 <a-input
+                  type="password"
                   placeholder="Enter your password "
                   v-model="password"
                 />
@@ -184,13 +196,16 @@ import StatsNav from "~/components/Views/StatsNav.vue";
 import CategoryHeader from "~/components/CategoryComponent/CategoryHeader.vue";
 import AddCategory from "~/components/CategoryComponent/AddCategory.vue";
 import ListCategoryAdmin from "~/components/CategoryComponent/ListCategoryAdmin.vue";
+import ListCategory from "~/components/CategoryComponent/ListCategory.vue";
 
 export default {
+  middleware: "auth",
   components: {
     StatsNav,
     CategoryHeader,
     AddCategory,
     ListCategoryAdmin,
+    ListCategory,
   },
   data() {
     return {
@@ -233,20 +248,15 @@ export default {
   },
   methods: {
     async getUsers() {
-      let users = await this.$axios
-        .get("http://localhost:8000/api/user")
-        .then((res) => {
-          // console.log(res);
-          if (res.status === 200) {
-            if (res.data.length > 0) {
-              this.users = res.data;
-            }
+      let users = await this.$axios.get("/admin_user").then((res) => {
+        if (res.status === 200) {
+          if (res.data.length > 0) {
+            this.users = res.data;
           }
-        });
+        }
+      });
     },
-    selectChange(e) {
-      console.log(e);
-    },
+    selectChange(e) {},
     closeModal() {
       this.showModal = false;
     },
@@ -258,15 +268,13 @@ export default {
       let actionType = e.target.selectedOptions[0].value;
       this.showModal = true;
       this.modalFormError = "";
-      let response = await this.$axios
-        .get(`http://localhost:8000/api/user/${actionId}`)
-        .then((res) => {
-          this.userObject = {
-            id: res.data.id,
-            username: res.data.username,
-          };
-        });
-      console.log(actionType, actionId);
+      let response = await this.$axios.get(`/user/${actionId}`).then((res) => {
+        this.userObject = {
+          id: res.data.id,
+          username: res.data.username,
+        };
+      });
+
       if (actionType === "role") {
         // REQUEST FOR THE CATEGORY
         // SET THE EDITING OBJECT
@@ -294,18 +302,16 @@ export default {
         this.activation_status.trim().length > 0
       ) {
         let response = await this.$axios
-          .post(
-            `http://localhost:8000/api/user/toggle_activation/${this.userObject.id}`,
-            {
-              password: this.password,
-              activation_status: this.activation_status,
-            }
-          )
+          .post(`/user/toggle_activation/${this.userObject.id}`, {
+            password: this.password,
+            activation_status: this.activation_status,
+          })
           .then((res) => {
             if (res.data.error !== undefined) {
               this.modalFormError = res.data.error;
             } else if (res.data.success !== undefined) {
               this.modalFormError = res.data.success;
+              this.password = "";
             }
           });
       } else {
@@ -320,13 +326,10 @@ export default {
         this.user_level.trim().length > 0
       ) {
         let response = await this.$axios
-          .post(
-            `http://localhost:8000/api/user/change_user_role/${this.userObject.id}`,
-            {
-              password: this.password,
-              user_level: this.user_level,
-            }
-          )
+          .post(`/user/change_user_role/${this.userObject.id}`, {
+            password: this.password,
+            user_level: this.user_level,
+          })
           .then((res) => {
             if (res.data.error !== undefined) {
               this.modalFormError = res.data.error;
@@ -346,14 +349,13 @@ export default {
 
       if (this.password.trim().length > 0) {
         let response = await this.$axios
-          .delete(
-            `http://localhost:8000/api/user/${this.userObject.id}?password=${this.password}`
-          )
+          .delete(`/user/${this.userObject.id}?password=${this.password}`)
           .then((res) => {
             if (res.data.error !== undefined) {
               this.modalFormError = res.data.error;
             } else if (res.data.success !== undefined) {
               this.modalFormError = res.data.success;
+              this.password = "";
               this.getUsers();
             }
           });
@@ -363,6 +365,12 @@ export default {
     },
   },
   mounted() {
+    if (
+      !this.$auth.user.user_level === "admin" ||
+      !this.$auth.user.user_level === "super admin"
+    ) {
+      this.$router.push("/");
+    }
     this.getUsers();
   },
 };
