@@ -1,5 +1,6 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  target: "server",
   head: {
     title: "Precast Naija",
     htmlAttrs: {
@@ -33,17 +34,24 @@ export default {
     "nuxt-material-design-icons-iconfont",
     "@nuxtjs/auth-next",
     "@nuxtjs/moment",
+    "@nuxtjs/google-analytics",
   ],
-
+  googleAnalytics: {
+    id: process.env.GOOGLE_ANALYTICS_ID, // Use as fallback if no runtime config is provided
+  },
+  publicRuntimeConfig: {
+    googleAnalytics: {
+      id: process.env.GOOGLE_ANALYTICS_ID,
+    },
+  },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   // axios: {
   //   // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-  //   baseURL: "http://localhost:8000/api",
+  //   baseURL: "https://www.precastnaija.com/cast_api/public/api",
   // },
   axios: {
     withCredentials: true,
-    // baseUrl: "http://localhost:8000",
-    baseURL: "http://localhost:8000/api",
+    baseURL: "https//www.precastnaija.com/cast_api/public/api",
   },
   proxy: {
     "/laravel": {
@@ -55,16 +63,15 @@ export default {
     strategies: {
       laravelSanctum: {
         provider: "laravel/sanctum",
-        url: "http://localhost:8000",
+        url: "https://www.precastnaija.com/cast_api/public",
         endpoints: {
           login: { url: "/api/login", method: "post" },
           logout: { url: "/api/logout", method: "post" },
         },
       },
       local: {
-        url: "http://localhost:8000",
         endpoints: {
-          login: { url: "/login", method: "post" },
+          login: { url: "login", method: "post" },
           logout: { url: "/logout", method: "post" },
           user: { url: "/login", method: "post" },
         },

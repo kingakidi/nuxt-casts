@@ -32,7 +32,7 @@
             @keyup="generateSlug"
           />
           <div class="show-post-slug">
-            https://www.precastnaija.com/id/{{ postSlug }}
+            <!-- https://www.precastnaija.com/id/{{ postSlug }} -->
           </div>
         </div>
         <div class="cast-form-group">
@@ -161,7 +161,7 @@ export default {
         this.postContent.trim().length > 0
       ) {
         let formData = new FormData();
-        formData.append("post_user_id", 1);
+        // formData.append("post_user_id", 1);
 
         formData.append("category_id", this.postCategory);
 
@@ -173,6 +173,7 @@ export default {
         // CHECK IF ALL FIELD EXCEPT IMAGES
         try {
           this.$axios.post("/post", formData).then((res) => {
+            console.log(res);
             if (
               res.status === 201 &&
               res.statusText.toLowerCase() === "created"

@@ -6,6 +6,7 @@
         <a href="" @click.prevent="setPostForm">Create Post </a>
         <div class="line"></div>
         <div
+          class="user-category-hack"
           v-if="
             this.$auth.user.user_level === 'admin' ||
             this.$auth.user.user_level === 'super admin'
@@ -79,9 +80,7 @@ export default {
     },
     async logout() {
       try {
-        await this.$auth.logout().then((res) => {
-          console.log(res);
-        });
+        await this.$auth.logout().then((res) => {});
         this.$router.push("/");
       } catch (error) {
         console.log("This is error", error);

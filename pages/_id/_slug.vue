@@ -21,13 +21,14 @@
         <HomeHeader />
         <div class="display-post">
           <h4 class="post-title">
-            <div>
-              {{ thisPost.title }} - By
-              <NuxtLink to="/profile"> {{ thisPost.username }} </NuxtLink> @
-              {{ $moment(thisPost.created_at).fromNow() }} ({{
+            <div>{{ thisPost.title }}</div>
+            <div class="post-time">
+              - By
+              <NuxtLink to="/profile"> {{ thisPost.username }} </NuxtLink> ({{
                 this.$store.state.totalSinglePageViews
               }}
-              views)
+              views) @
+              {{ $moment(thisPost.created_at).format("LLLL") }}
             </div>
           </h4>
           <div class="post-content" v-html="thisPost.content">
@@ -70,8 +71,8 @@
       <section class="pagination">
         <a-pagination
           :current="current"
-          :total="totalPage"
-          :pageSize="10"
+          :total="55"
+          :pageSize="20"
           @change="changePage"
         />
       </section>
@@ -167,7 +168,6 @@ export default {
     this.$store.dispatch("removePostForm");
 
     this.filterCategoryTitle();
-    console.log(this.$store.state.totalPostPage);
   },
 };
 </script>

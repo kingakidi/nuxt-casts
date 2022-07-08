@@ -3,19 +3,17 @@
     <p class="commenter">
       <a href="">
         {{ postTitle }} By {{ comment.username }} - @
-        {{ $moment(comment.created_at).fromNow() }}</a
+        {{ $moment(comment.created_at).format("LLLL") }}</a
       >
     </p>
 
-    <p class="comment-text">
-      {{ comment.comment }}
-    </p>
+    <p class="comment-text" v-html="comment.comment"></p>
     <div class="comments-reaction-icons">
       <div class="comment-likes-counts">
-        <button class="btn-reactions">
+        <!-- <button class="btn-reactions">
           <span class="material-icons show-likes-color"> favorite </span>
         </button>
-        <span>1k</span>
+        <span>1k</span> -->
       </div>
       <div v-if="this.$auth.loggedIn">
         <a-space

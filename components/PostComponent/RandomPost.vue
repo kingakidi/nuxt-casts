@@ -19,9 +19,11 @@ export default {
   computed: {},
   methods: {
     async getFivePostsByPostId() {
-      this.$axios.get("/related_post?post_id=15").then((res) => {
-        this.randomPosts = res.data;
-      });
+      this.$axios
+        .get("http://localhost:8000/api/related_post?post_id=15")
+        .then((res) => {
+          this.randomPosts = res.data;
+        });
     },
   },
   mounted() {

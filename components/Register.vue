@@ -51,8 +51,17 @@
       <div v-if="error">
         {{ error }}
       </div>
+
+      <div v-if="loading">
+        <a-spin />
+      </div>
       <div class="cast-group">
-        <input type="submit" value="Register" class="cast-input" />
+        <input
+          type="submit"
+          value="Register"
+          class="cast-input"
+          id="btnRegister"
+        />
       </div>
     </form>
   </div>
@@ -71,6 +80,7 @@ export default {
         password: "",
       },
       error: "",
+      loading: false,
     };
   },
   methods: {
@@ -80,6 +90,8 @@ export default {
     checkUsername() {},
     registerUser() {
       //   CHECK ALL FIELDS IS FILLED
+      let btnRegister = document.getElementById("btnRegister");
+
       this.error = "";
       if (
         this.registerData.username !== "" ||
@@ -94,6 +106,9 @@ export default {
         } else if (this.registerData.username.trim().length < 5) {
           this.error = "Username must be upto 5 character";
         } else {
+          this.loading = true;
+          btnRegister.disabled = true;
+          this.error = "Loading...";
           this.$axios
             .post("/user", {
               username: this.registerData.username,
@@ -109,6 +124,9 @@ export default {
               } else if (res.data.message !== undefined) {
                 this.error = res.data.message;
               }
+            })
+            .finally(() => {
+              (this.loading = false), (btnRegister.disabled = false);
             });
         }
       } else {

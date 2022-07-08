@@ -25,8 +25,9 @@
         />
       </div>
       <div>{{ error }}</div>
+      <div v-if="loading"><a-spin /></div>
       <div class="cast-group">
-        <input type="submit" class="cast-input" />
+        <input type="submit" id="btnLogin" class="cast-input" value="Login" />
       </div>
     </form>
   </div>
@@ -41,6 +42,7 @@ export default {
         password: "",
       },
       error: "",
+      loading: false,
     };
   },
   methods: {
@@ -48,48 +50,50 @@ export default {
       return this.$store.dispatch("setLoginForm", false);
     },
 
-    async logIn() {
-      let response = await this.$auth
-        .loginWith("local", {
-          data: {
-            username: this.loginData.username,
-            password: this.loginData.password,
-          },
-        })
-        .then((res) => {});
-    },
     async login() {
       this.error = "";
-      try {
-        let response = await this.$auth
-          .loginWith("local", {
-            data: {
-              username: this.loginData.username,
-              password: this.loginData.password,
-            },
-          })
-          .then((res) => {
-            if (res.data.error !== undefined) {
-              this.error = res.data.error;
-
-              // this.modalFormError = res.data.error;
-            } else if (res.data.success !== undefined) {
-              // this.modalFormError = res.data.success;
-
-              let response1 = this.$auth
-                .loginWith("laravelSanctum", {
-                  data: {
-                    username: this.loginData.username,
-                    password: this.loginData.password,
-                  },
-                })
-                .then((res) => {});
-            } else if (res.data.data !== undefined) {
-              this.$auth.setUser(this.$auth.user);
-            }
-          });
-      } catch (error) {
-        // console.log(error);
+      let btnLogin = document.getElementById("btnLogin");
+      if (
+        this.loginData.username.trim().length > 0 &&
+        this.loginData.password.trim().length > 0
+      ) {
+        this.loading = true;
+        btnLogin.disabled = true;
+        try {
+          let response = await this.$auth
+            .loginWith("local", {
+              data: {
+                username: this.loginData.username,
+                password: this.loginData.password,
+              },
+            })
+            .then((res) => {
+              if (res.data.error !== undefined) {
+                this.error = res.data.error;
+                this.loading = false;
+                btnLogin.disabled = false;
+              } else if (res.data.success !== undefined) {
+                let response1 = this.$auth
+                  .loginWith("laravelSanctum", {
+                    data: {
+                      username: this.loginData.username,
+                      password: this.loginData.password,
+                    },
+                  })
+                  .then((res) => {})
+                  .finally(() => {
+                    this.loading = false;
+                    btnLogin.disabled = false;
+                  });
+              } else if (res.data.data !== undefined) {
+                this.$auth.setUser(this.$auth.user);
+              }
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        this.error = "All fields required";
       }
     },
   },

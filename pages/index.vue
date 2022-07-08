@@ -24,6 +24,7 @@
         <a-pagination
           :current="current"
           :total="totalPage"
+          :pageSize="20"
           @change="changePage"
         />
       </section>
@@ -90,20 +91,20 @@ export default {
         })
         .then((res) => {
           if (res.data.error !== undefined) {
-            console.log(res.data.error);
             // this.modalFormError = res.data.error;
           } else if (res.data.success !== undefined) {
             // this.modalFormError = res.data.success;
-            console.log(res.data.success);
+
             this.password = "";
           } else if (res.data.data !== undefined) {
-            console.log(res.data.data);
             this.$auth.setUser(this.$auth.user);
           }
         });
     },
   },
   mounted() {
+    console.log(this.$axios.defaults.baseURL);
+
     this.$store.dispatch("getPosts");
     this.$store.dispatch("getCategories");
     this.$store.dispatch("removePostForm");

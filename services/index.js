@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: "https://www.precastnaija.com/cast_api/public/api",
   withCredentials: true,
   headers: {
     Accept: "application/json",

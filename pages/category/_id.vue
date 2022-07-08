@@ -32,6 +32,7 @@
         <a-pagination
           :current="current"
           :total="totalPage"
+          :pageSize="20"
           @change="changePage"
         />
       </section>
