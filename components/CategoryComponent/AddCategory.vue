@@ -51,7 +51,7 @@ export default {
     createCategory() {
       this.showStatus = "";
       // CHECK INPUT, SHOW LOADER, SEND
-      console.log(this.categoryTitle);
+
       if (this.categoryTitle !== "") {
         let data = { title: this.categoryTitle, user_id: 4 };
         let postCat = this.$store.dispatch("postCategory", data);

@@ -103,8 +103,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.$axios.defaults.baseURL);
-
     this.$store.dispatch("getPosts");
     this.$store.dispatch("getCategories");
     this.$store.dispatch("removePostForm");

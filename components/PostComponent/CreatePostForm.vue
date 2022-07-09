@@ -153,7 +153,7 @@ export default {
 
     createPost() {
       this.errors = "";
-      // console.log(this.postContent);
+
       if (
         this.clean(this.postCategory) > 0 &&
         this.clean(this.postSlug) > 0 &&
@@ -173,7 +173,6 @@ export default {
         // CHECK IF ALL FIELD EXCEPT IMAGES
         try {
           this.$axios.post("/post", formData).then((res) => {
-            console.log(res);
             if (
               res.status === 201 &&
               res.statusText.toLowerCase() === "created"

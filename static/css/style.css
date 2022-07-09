@@ -112,9 +112,9 @@ body {
   padding: 20px;
 }
 
-.create-comment-form{
+.create-comment-form {
   width: 100%;
-  
+
   padding: 20px;
 }
 
@@ -164,6 +164,9 @@ body {
 }
 .list-home-categories h1 {
   margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .home-cats-container {
@@ -337,7 +340,7 @@ footer {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align:center;
+  text-align: center;
   margin-top: 15px;
 }
 
@@ -345,7 +348,7 @@ footer {
   display: flex;
 }
 
-.post-time{
+.post-time {
   font-size: 14px;
 }
 /* SINGLE POST  */
@@ -372,7 +375,6 @@ footer {
   color: #fff;
   border-top-right-radius: 18px;
   border-bottom-left-radius: 20px;
-
 }
 
 .post-main-title {
@@ -423,16 +425,15 @@ footer {
 .add-comment {
   padding: 20px;
   border-top: 1px solid #646161;
- 
+
   padding-bottom: 10px;
 }
 
-.comment-status{
+.comment-status {
   padding: 20px;
   padding-top: 0px;
   padding-bottom: 10px;
   border-bottom: 1px solid #646161;
-
 }
 
 .add-comment button {
@@ -529,8 +530,8 @@ footer {
   margin: 20px;
 }
 
-.btn-comment-submit{
-  border: 1px solid rgb(41, 37, 37)
+.btn-comment-submit {
+  border: 1px solid rgb(41, 37, 37);
 }
 
 #btn-post-front-page {
@@ -538,14 +539,20 @@ footer {
   color: #fff;
 }
 
-.create-post-form .ck.ck-editor__main{
+.create-post-form .ck.ck-editor__main {
   height: 400px;
 }
-.create-post-form, .create-comment-form{
+.create-post-form,
+.create-comment-form {
   width: 80%;
 }
-.user-category-hack{
+.user-category-hack {
   display: flex;
+}
+
+.random-list-container {
+  display: flex;
+  flex-wrap: wrap;
 }
 /* EDIT CATEGORY FORM END  */
 /* END OF REACTIONS STYLING  */
@@ -582,13 +589,12 @@ footer {
   .cast-nav {
     font-size: 10px;
   }
-  
-  .create-post-form, .create-comment-form{
+
+  .create-post-form,
+  .create-comment-form {
     width: 90%;
   }
 }
-
-
 
 @media (max-width: 500px) {
   .ads-2 {
@@ -599,9 +605,8 @@ footer {
     width: 95%;
   }
 
-  .create-post-form, .create-comment-form{
+  .create-post-form,
+  .create-comment-form {
     width: 95%;
   }
 }
-
-

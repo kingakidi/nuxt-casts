@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <div v-for="post in randomPosts" :key="post.id">
-      <NuxtLink :to="`/${post.id}/${post.slug}`">
-        {{ post.title }}
-      </NuxtLink>
-    </div>
+  <div class="random-list-container">
+    <NuxtLink
+      v-for="post in randomPosts"
+      :key="post.id"
+      :to="`/${post.id}/${post.slug}`"
+    >
+      {{ post.title }}
+    </NuxtLink>
   </div>
 </template>
 
@@ -19,11 +21,9 @@ export default {
   computed: {},
   methods: {
     async getFivePostsByPostId() {
-      this.$axios
-        .get("http://localhost:8000/api/related_post?post_id=15")
-        .then((res) => {
-          this.randomPosts = res.data;
-        });
+      this.$axios.get("/related_post?post_id=15").then((res) => {
+        this.randomPosts = res.data;
+      });
     },
   },
   mounted() {
