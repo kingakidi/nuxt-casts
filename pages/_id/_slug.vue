@@ -5,7 +5,7 @@
     <div class="wrapper" id="wrapper">
       <section class="list-home-categories">
         <h1>
-          <NuxtLink to="/">Precast Forum</NuxtLink> /
+          <NuxtLink to="/">Precast Forum</NuxtLink>
           <NuxtLink :to="`/category/${postCategory.id}`">
             {{ categoryTitle[0].toUpperCase() + categoryTitle.substring(1) }}
           </NuxtLink>
