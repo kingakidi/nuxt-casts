@@ -51,7 +51,7 @@ export default {
   // },
   axios: {
     withCredentials: true,
-    baseURL: process.env.API_URL,
+    baseURL: "https://castapi.precastnaija.com/public/api",
   },
   proxy: {
     "/laravel": {
