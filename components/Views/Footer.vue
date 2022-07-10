@@ -1,19 +1,15 @@
 <template>
-   <footer class="random-posts">
-        <div class="disclaimer">
-          Disclaimer: Every caster is responsible for anything they post on
-          precast
-        </div>
-        <a href="">CLICK HERE TO PLACE YOUR ADVERT</a>
-      </footer>
+  <footer class="random-posts">
+    <div class="disclaimer">
+      Every caster is accountable for everything they publish on precastnaija.
+    </div>
+    <a href="/">CLICK HERE TO PLACE YOUR ADVERT</a>
+  </footer>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
-
 </style>

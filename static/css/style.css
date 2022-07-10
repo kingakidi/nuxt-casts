@@ -19,6 +19,10 @@ body {
 #__layout {
   height: 100%;
 }
+.controller {
+  height: 100%;
+}
+
 .register-container,
 .login-container {
   height: 100%;
@@ -209,9 +213,10 @@ body {
 .list-casts {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   width: 100%;
+  flex-grow: 24;
 }
 
 .list-casts h1 {
