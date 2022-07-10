@@ -9,6 +9,7 @@
           class="user-category-hack"
           v-if="
             this.$auth.user.user_level === 'admin' ||
+            
             this.$auth.user.user_level === 'super admin'
           "
         >

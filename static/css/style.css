@@ -460,12 +460,12 @@ footer {
   border-bottom: 1px solid #646161;
 }
 
-.add-comment button {
-  /* border: none;
+/* .add-comment button {
+  border: none;
   background-color: transparent;
   margin-left: 10px;
-  display: flex; */
-}
+  display: flex;
+} */
 
 .add-comment input {
   font-size: 16px;

@@ -63,7 +63,7 @@ export default {
     strategies: {
       laravelSanctum: {
         provider: "laravel/sanctum",
-        url: "http://localhost:8000",
+        url: "https://sydeestack.com/api/public",
         endpoints: {
           login: { url: "/api/login", method: "post" },
           logout: { url: "/api/logout", method: "post" },
