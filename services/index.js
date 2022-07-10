@@ -2,7 +2,7 @@ import axios from "axios";
 
 const apiClient = axios.create({
   // baseURL: "http://localhost:8000/api",
-  baseURL: "https://sydeestack.com/api/public/api",
+  baseURL: "http://castapi.precastnaija.com/public/api",
   withCredentials: true,
   headers: {
     Accept: "application/json",

@@ -63,7 +63,7 @@ export default {
     strategies: {
       laravelSanctum: {
         provider: "laravel/sanctum",
-        url: "https://sydeestack.com/api/public",
+        url: "http://castapi.precastnaija.com/public",
         endpoints: {
           login: { url: "/api/login", method: "post" },
           logout: { url: "/api/logout", method: "post" },
