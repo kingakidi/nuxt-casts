@@ -17,10 +17,10 @@ body {
 }
 #__nuxt,
 #__layout {
-  height: 100%;
+  min-height: 100%;
 }
 .controller {
-  height: 100%;
+  min-height: 100%;
 }
 
 .register-container,
