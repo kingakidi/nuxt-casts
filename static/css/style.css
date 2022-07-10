@@ -424,6 +424,7 @@ footer {
 .ck-editor {
   /* height: 100%; */
   z-index: 0;
+  width:95%;
 }
 .ck-editor__editable {
   min-height: 100%;
