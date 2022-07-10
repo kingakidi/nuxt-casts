@@ -4,9 +4,9 @@
     <StatsNav />
 
     <div class="wrapper" id="wrapper">
-      <header>
+      <div class="precast-title">
         <h1><NuxtLink to="/">Precast Forum</NuxtLink></h1>
-      </header>
+      </div>
 
       <ListCategory />
 

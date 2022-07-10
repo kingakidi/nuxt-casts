@@ -71,7 +71,7 @@
       <section class="pagination">
         <a-pagination
           :current="current"
-          :total="55"
+          :total="totalPage"
           :pageSize="20"
           @change="changePage"
         />

@@ -6,8 +6,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Open Sans, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
 }
 
 html {
@@ -42,7 +40,7 @@ body {
 .cast-register-form,
 .login-form,
 .create-category-form {
-  min-width: 400px;
+  width: 400px;
   box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
   padding: 20px;
   display: flex;
@@ -172,18 +170,20 @@ body {
 .home-cats-container {
   width: 100%;
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   flex-wrap: wrap;
-  margin-top: 10px;
+  margin-top: 8px;
   border: solid #646161 1px;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .home-cats-container a {
   display: inline-block;
-  margin: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 4px;
 }
 
 .show-ads {
@@ -228,6 +228,12 @@ body {
   padding: 5px;
   margin-top: 10px;
 }
+
+.cast-group input,
+.cast-group input:focus {
+  border: 1px solid #13101082;
+}
+
 .single-cast {
   display: flex;
   justify-content: space-between;
@@ -361,8 +367,17 @@ footer {
   border: 0.5px solid #646161;
   border-top-right-radius: 20px;
   border-bottom-left-radius: 20px;
+  width: 98%;
 }
 
+.precast-title {
+  font-weight: bold;
+  margin: 0px;
+}
+
+.precast-title h1 {
+  margin: 0;
+}
 .post-title {
   display: flex;
   background: #646161;
@@ -388,6 +403,10 @@ footer {
   padding-bottom: 15px;
   margin: 20px 20px 0px 20px;
   /* border-bottom: 1px solid #646161; */
+}
+
+.post-content img {
+  max-width: 100%;
 }
 
 /* CKEDITOR START */
@@ -544,7 +563,7 @@ footer {
 }
 .create-post-form,
 .create-comment-form {
-  width: 80%;
+  width: 100%;
 }
 .user-category-hack {
   display: flex;
@@ -607,6 +626,13 @@ footer {
 
   .create-post-form,
   .create-comment-form {
+    width: 95%;
+  }
+}
+@media (max-width: 450px) {
+  .cast-register-form,
+  .login-form,
+  .create-category-form {
     width: 95%;
   }
 }

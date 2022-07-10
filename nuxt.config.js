@@ -51,7 +51,7 @@ export default {
   // },
   axios: {
     withCredentials: true,
-    baseURL: "https//www.precastnaija.com/cast_api/public/api",
+    baseURL: process.env.API_URL,
   },
   proxy: {
     "/laravel": {
@@ -63,7 +63,7 @@ export default {
     strategies: {
       laravelSanctum: {
         provider: "laravel/sanctum",
-        url: "https://www.precastnaija.com/cast_api/public",
+        url: "http://localhost:8000",
         endpoints: {
           login: { url: "/api/login", method: "post" },
           logout: { url: "/api/logout", method: "post" },

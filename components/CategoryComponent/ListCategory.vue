@@ -6,7 +6,7 @@
         v-for="category in categories"
         :key="category.id"
       >
-        {{ category.title[0].toUpperCase() + category.title.substring(1) }}
+        {{ category.title[0].toUpperCase() + category.title.substring(1) }},
       </NuxtLink>
     </div>
   </section>
