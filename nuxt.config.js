@@ -51,6 +51,7 @@ export default {
   // },
   axios: {
     withCredentials: true,
+    // baseURL: "http://localhost:8000/api",
     baseURL: "https://castapi.precastnaija.com/public/api",
   },
   proxy: {
@@ -71,7 +72,7 @@ export default {
       },
       local: {
         endpoints: {
-          login: { url: "login", method: "post" },
+          login: { url: "/login", method: "post" },
           logout: { url: "/logout", method: "post" },
           user: { url: "/login", method: "post" },
         },

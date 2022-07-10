@@ -91,6 +91,9 @@ export default {
             });
         } catch (error) {
           console.log(error);
+          this.loading = false;
+          btnLogin.disabled = false;
+          this.error = "Failed to login";
         }
       } else {
         this.error = "All fields required";
