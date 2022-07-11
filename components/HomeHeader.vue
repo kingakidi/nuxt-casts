@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="main-header">
-      <h2><a href="">Trending Right Now</a></h2>
+      <h2>
+        <a href="">Trending Right Now</a>
+      </h2>
       <div class="main-header-group" v-if="this.$auth.loggedIn">
         <a href="" @click.prevent="setPostForm">Create Post </a>
         <div class="line"></div>
@@ -9,7 +11,6 @@
           class="user-category-hack"
           v-if="
             this.$auth.user.user_level === 'admin' ||
-            
             this.$auth.user.user_level === 'super admin'
           "
         >
@@ -22,7 +23,10 @@
         <a href="">My Posts</a>
 
         <div class="line"></div>
-        <a href="#" @click.prevent="logout">logout</a>
+        <a href="#" @click.prevent="logout">Logout</a>
+        <span v-if="this.$auth.loggedIn">
+          You are login as: ({{ this.$auth.user.username }})
+        </span>
       </div>
       <div class="main-header-group" v-if="!this.$auth.loggedIn">
         <div class="line"></div>

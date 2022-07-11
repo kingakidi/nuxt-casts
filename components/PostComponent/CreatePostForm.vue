@@ -38,19 +38,9 @@
         <div class="cast-form-group">
           <div class="ckeditor-edit">
             <client-only placeholder="loading...">
-              <Ckeditor />
+              <ckeditor-nuxt v-model="postContent" :config="editorConfig" />
             </client-only>
           </div>
-
-          <!-- <textarea
-            name="content"
-            id="content"
-            cols="30"
-            rows="10"
-            class="cast-input"
-            placeholder="Post Content"
-            v-model="postContent"
-          ></textarea> -->
         </div>
         <div class="cast-form-group">
           <label for="file">Select Image</label>
@@ -62,39 +52,56 @@
             @change="postFileChange"
           />
         </div>
+        <div v-if="loading"><a-spin /></div>
         <div class="show-error">
           {{ errors }}
         </div>
         <div class="cast-form-group">
-          <input type="submit" class="cast-input" value="Create Post" />
+          <input
+            type="submit"
+            class="cast-input"
+            id="btn-create-post"
+            value="Create Post"
+          />
         </div>
       </form>
-      <!-- {{ postCategory }} - {{ postTitle }} - {{ [postSlug] }} -->
     </div>
   </div>
 </template>
 
 <script>
-import Ckeditor from "~/components/Ckeditor.vue";
-
 export default {
-  components: { Ckeditor },
+  components: {
+    "ckeditor-nuxt": () => {
+      if (process.client) {
+        return import("@blowstack/ckeditor-nuxt");
+      }
+    },
+  },
   name: "CreatePostForm",
   data() {
     return {
+      editorConfig: {
+        removePlugins: ["Title"],
+        simpleUpload: {
+          uploadUrl: "./static/images",
+        },
+      },
       postSlug: "",
       postCategory: "",
       postTitle: "",
 
       postFiles: [],
+      postContent: "",
 
       errors: "",
+      loading: false,
     };
   },
   computed: {
-    postContent() {
-      return this.$store.state.postContent;
-    },
+    // postContent() {
+    //   return this.$store.state.postContent;
+    // },
     categories() {
       return this.$store.state.categories;
     },
@@ -161,10 +168,8 @@ export default {
         this.postContent.trim().length > 0
       ) {
         let formData = new FormData();
-        // formData.append("post_user_id", 1);
 
         formData.append("category_id", this.postCategory);
-
         formData.append("title", this.postTitle);
         formData.append("content", this.postContent);
         formData.append("slug", this.postSlug);
@@ -172,6 +177,13 @@ export default {
 
         // CHECK IF ALL FIELD EXCEPT IMAGES
         try {
+          let btnCreatePost = document.getElementById("btn-create-post");
+
+          btnCreatePost.disabled = true;
+          this.loading = true;
+          this.errors = "Loading...";
+          // Set loading status
+          // Disabled Button for Create Post
           this.$axios.post("/post", formData).then((res) => {
             if (
               res.status === 201 &&
@@ -182,12 +194,18 @@ export default {
               this.$store.dispatch("setPostConent", "");
               this.postSlug = "";
               this.$refs.postFiles.value = "";
+              this.loading = false;
             } else {
+              this.loading = false;
               this.errors = res.data.statusMessage;
+              btnCreatePost.disabled = false;
             }
           });
         } catch (error) {
+          btnCreatePost.disabled = false;
           console.log(error);
+          this.loading = false;
+          this.errors = "Failed to create post";
         }
       } else {
         this.errors = "All fields required";

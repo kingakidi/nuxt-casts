@@ -3,7 +3,7 @@
     <StatsNav />
     <div class="wrapper" id="wrapper">
       <section class="list-home-categories">
-        <h1><NuxtLink to="/">Precast Forum</NuxtLink> / List of Users</h1>
+        <h1><NuxtLink to="/">Precast Forum</NuxtLink> - List of Users</h1>
         <ListCategory />
       </section>
 
@@ -162,7 +162,7 @@
             >
               <li>{{ user.username }}</li>
               <li>{{ user.name }}</li>
-              <li>{{ user.email }}</li>
+              <li>{{ user.email.toLowerCase() }}</li>
               <li>{{ user.user_level }}</li>
 
               <li>
