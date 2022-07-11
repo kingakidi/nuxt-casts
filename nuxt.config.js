@@ -51,8 +51,8 @@ export default {
   // },
   axios: {
     withCredentials: true,
-    // baseURL: "http://localhost:8000/api",
-    baseURL: "https://castapi.precastnaija.com/public/api",
+    baseURL: "http://localhost:8000/api",
+    // baseURL: "https://castapi.precastnaija.com/public/api",
   },
   proxy: {
     "/laravel": {
@@ -64,7 +64,7 @@ export default {
     strategies: {
       laravelSanctum: {
         provider: "laravel/sanctum",
-        url: "https://castapi.precastnaija.com/public",
+        url: "http://localhost:8000",
         endpoints: {
           login: { url: "/api/login", method: "post" },
           logout: { url: "/api/logout", method: "post" },

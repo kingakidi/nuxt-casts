@@ -1,18 +1,15 @@
 <template>
   <nav class="cast-nav">
-      <span class="cast-home-stats"> Stats: 2,890,890 </span
-      ><span class="cast-home-stats">Topics: 6,452,258 </span
-      ><span class="cast-home-stats">Date: 6th June, 2022 </span
-      ><span class="cast-home-stats">Time: 11:30am</span>
-    </nav>
+    <span class="cast-home-stats"> Stats: 50,000 </span
+    ><span class="cast-home-stats">Topics: 10,000 </span
+    ><span class="cast-home-stats">Date: {{ $moment().format("LL") }} </span
+    ><span class="cast-home-stats">Time: {{ $moment().format("LT") }}</span>
+  </nav>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
-
 </style>
