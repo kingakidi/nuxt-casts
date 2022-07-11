@@ -29,7 +29,6 @@
             class="cast-input"
             placeholder="Post Title"
             v-model="postTitle"
-            @keyup="generateSlug"
           />
           <div class="show-post-slug">
             <!-- https://www.precastnaija.com/id/{{ postSlug }} -->
@@ -113,20 +112,7 @@ export default {
     setCategory(e) {
       this.postCategory = e.target.value;
     },
-    // capitalizeCategory(data) {
-    //   let newData = data[0].toUpperCase() + data.substring(1);
-    //   return newData;
-    // },
-    generateSlug() {
-      // REMOVE DOUBLE SPACE
-      let singleSpace = this.postTitle.replace(/  +/g, " ");
-      this.postTitle = singleSpace;
 
-      if (singleSpace.length < 30) {
-        const newSlug = singleSpace.replace(/\s/g, "-");
-        this.postSlug = newSlug.toLowerCase();
-      }
-    },
     clean(data) {
       return data.length;
     },
@@ -160,6 +146,12 @@ export default {
 
     createPost() {
       this.errors = "";
+      let singleSpace = this.postTitle.replace(/  +/g, " ");
+
+      this.postTitle = singleSpace;
+
+      const newSlug = singleSpace.replace(/\s/g, "-");
+      this.postSlug = newSlug.toLowerCase();
 
       if (
         this.clean(this.postCategory) > 0 &&
