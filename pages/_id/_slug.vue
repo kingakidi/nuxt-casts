@@ -16,7 +16,7 @@
       <ShowAds />
       <main class="list-casts">
         <h3 class="post-main-title">
-          {{ thisPost.title }}
+          {{ thisPost.title }} 
         </h3>
         <HomeHeader />
         <div class="display-post">
@@ -104,7 +104,7 @@ export default {
   },
   head() {
     return {
-      title: this.thisPost.title,
+      title: `${this.thisPost.title} - Precast`,
       meta: [
         {
           hid: this.postId,

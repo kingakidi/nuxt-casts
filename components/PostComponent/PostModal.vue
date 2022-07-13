@@ -93,8 +93,8 @@
     <div v-if="this.$auth.loggedIn">
       <div
         v-if="
-          (this.$auth.loggedIn && this.$auth.user.user_level === 'auditor') ||
-          this.$auth.user.user_level === 'auditor' ||
+          (this.$auth.loggedIn && this.$auth.user.user_level === 'moderator') ||
+          this.$auth.user.user_level === 'moderator' ||
           this.$auth.user.user_level === 'admin' ||
           this.$auth.user.user_level === 'super admin'
         "
@@ -106,12 +106,19 @@
         <a-button type="danger" @click="setDeletePost(thisPost.id)"
           >Delete</a-button
         >
-        <a-button type="danger" @click="setDisablePost(thisPost.id)"
-          >Disabled</a-button
+        <div
+          v-if="
+            this.$auth.user.user_level === 'admin' ||
+            this.$auth.user.user_level === 'super admin'
+          "
         >
-        <a-button type="danger" @click="setSuspendUser(thisPost.id)">
-          Suspend User
-        </a-button>
+          <a-button type="danger" @click="setDisablePost(thisPost.id)"
+            >Disabled</a-button
+          >
+          <a-button type="danger" @click="setSuspendUser(thisPost.id)">
+            Suspend User
+          </a-button>
+        </div>
       </div>
     </div>
   </div>

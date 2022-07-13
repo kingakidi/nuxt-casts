@@ -19,10 +19,18 @@
         <a-space
           v-if="
             this.$auth.user.user_level === 'super admin' ||
+            this.$auth.user.user_level === 'admin' ||
+            this.$auth.user.user_level === 'moderator'
+          "
+        >
+          <a-button type="primary">Edit</a-button></a-space
+        >
+        <a-space
+          v-if="
+            this.$auth.user.user_level === 'super admin' ||
             this.$auth.user.user_level === 'admin'
           "
         >
-          <a-button type="primary">Edit</a-button>
           <a-button type="danger">Delete</a-button>
           <a-button type="danger">Disabled</a-button>
           <a-button type="danger"> Suspend User </a-button>

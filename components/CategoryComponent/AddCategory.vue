@@ -56,7 +56,7 @@ export default {
         let data = { title: this.categoryTitle, user_id: 4 };
         let postCat = this.$store.dispatch("postCategory", data);
         postCat.then((res) => {
-          console.log(res, res.statusText);
+          
           if (res.status === 201) {
             this.showStatus = `${this.categoryTitle} is added `;
             this.categoryTitle = "";
