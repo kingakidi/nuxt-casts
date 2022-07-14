@@ -411,7 +411,8 @@ footer {
   /* border-bottom: 1px solid #646161; */
 }
 
-.post-content img {
+.post-content img,
+iframe {
   max-width: 100%;
 }
 

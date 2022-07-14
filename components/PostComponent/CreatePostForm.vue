@@ -35,13 +35,14 @@
           </div>
         </div>
         <div class="cast-form-group">
+          <label>Cast</label>
           <div class="ckeditor-edit">
             <client-only placeholder="loading...">
               <ckeditor-nuxt v-model="postContent" :config="editorConfig" />
             </client-only>
           </div>
         </div>
-        <div class="cast-form-group">
+        <div class="cast-form-group" v-show="false">
           <label for="file">Select Image</label>
           <input
             type="file"
@@ -174,13 +175,18 @@ export default {
           btnCreatePost.disabled = true;
           this.loading = true;
           this.errors = "Loading...";
+
           // Set loading status
           // Disabled Button for Create Post
           this.$axios.post("/post", formData).then((res) => {
-            if (
-              res.status === 201 &&
-              res.statusText.toLowerCase() === "created"
-            ) {
+            if (res.data.success != undefined) {
+              this.errors = "Post Created Successfully";
+              this.postTitle = "";
+              this.$store.dispatch("setPostConent", "");
+              this.postSlug = "";
+              this.$refs.postFiles.value = "";
+              this.loading = false;
+            } else if (res.status === 201) {
               this.errors = "Post Created Successfully";
               this.postTitle = "";
               this.$store.dispatch("setPostConent", "");

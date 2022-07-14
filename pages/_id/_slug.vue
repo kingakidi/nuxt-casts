@@ -16,7 +16,7 @@
       <ShowAds />
       <main class="list-casts">
         <h3 class="post-main-title">
-          {{ thisPost.title }} 
+          {{ thisPost.title }}
         </h3>
         <HomeHeader />
         <div class="display-post">
@@ -51,8 +51,25 @@
                 <span>1.2k</span>
               </div>
               <div class="post-share-counts">
-                <span class="material-icons"> share </span>
-                <span>1.2k</span>
+                <span class="material-icons"> </span>
+                <!-- <span>1.2k</span> -->
+                Share on
+
+                <ShareNetwork
+                  v-for="network in networks"
+                  :network="network.network"
+                  :key="network.network"
+                  :url="sharing.url"
+                  :title="title"
+                  :description="description"
+                  quote="Precastnaija"
+                  hashtags="precastnaija"
+                >
+                  <font-awesome-icon
+                    :icon="network.icon"
+                    class="text-white fa-fw fa-lg"
+                  />
+                </ShareNetwork>
               </div>
             </div>
             <div class="post-by">
@@ -123,11 +140,42 @@ export default {
         id: "",
         title: " ",
       },
+      sharing: {
+        url: process.env.baseUrl + this.$route.fullPath,
+        title: "",
+        description: "",
+        quote: "",
+        hashtags: "",
+        twitterUser: "zemna",
+      },
+      networks: [
+        { network: "facebook", icon: ["fab", "facebook-f"], color: "#1877f2" },
+        // { network: "twitter", icon: ["fab", "twitter"], color: "#1da1f2" },
+        // {
+        //   network: "messenger",
+        //   icon: ["fab", "facebook-messenger"],
+        //   color: "#0084ff",
+        // },
+        // { network: "pinterest", icon: ["fab", "pinterest"], color: "#bd081c" },
+        // {
+        //   network: "telegram",
+        //   icon: ["fab", "telegram-plane"],
+        //   color: "#0088cc",
+        // },
+        { network: "whatsapp", icon: ["fab", "whatsapp"], color: "#25d366" },
+      ],
     };
   },
   computed: {
-    thisPost() {
-      return this.$store.state.post;
+    // thisPost() {
+    //   return this.$store.state.post;
+    // },
+    title() {
+      return this.thisPost.title;
+    },
+
+    description() {
+      return this.thisPost.description;
     },
     totalPage() {
       return this.$store.state.totalPostPage;
@@ -138,6 +186,11 @@ export default {
     categoryTitle() {
       return this.postCategory.title;
     },
+  },
+  asyncData({ $axios, params }) {
+    return $axios.get(`/post/${params.id}`).then((res) => {
+      return { thisPost: res.data.post[0] };
+    });
   },
   methods: {
     async changePage(pageNumber) {

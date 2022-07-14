@@ -9,7 +9,13 @@ export default {
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { hid: "description", name: "description", content: "" },
+      {
+        hid: "#1",
+        name: "description",
+        description: "Your #1 Information center",
+        content:
+          "Precast Naija is a platform for all kind of information, from Breaking News, Recent Happening, ICT, Sport, Hangout and many more, signup on the platform and let your voice be heard",
+      },
       { name: "format-detection", content: "telephone=no" },
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
@@ -25,7 +31,22 @@ export default {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [],
+  buildModules: ["@nuxtjs/fontawesome"],
+  fontawesome: {
+    icons: {
+      regular: ["faEnvelope"],
+      brands: [
+        "faFacebook",
+        "faFacebookF",
+        "faFacebookMessenger",
+        "faInstagram",
+        "faTwitter",
+        "faWhatsapp",
+        "faPinterest",
+        "faTelegramPlane",
+      ],
+    },
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -35,6 +56,7 @@ export default {
     "@nuxtjs/auth-next",
     "@nuxtjs/moment",
     "@nuxtjs/google-analytics",
+    "vue-social-sharing/nuxt",
   ],
   googleAnalytics: {
     id: process.env.GOOGLE_ANALYTICS_ID, // Use as fallback if no runtime config is provided

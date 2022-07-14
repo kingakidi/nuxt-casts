@@ -1,6 +1,7 @@
 <template>
   <div>
     <form class="add-comment create-comment-form">
+      <label>Add Comment</label>
       <div class="ckeditor-edit">
         <client-only placeholder="loading...">
           <ckeditor-nuxt v-model="comment" :config="editorConfig" />
