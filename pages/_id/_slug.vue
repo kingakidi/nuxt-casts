@@ -141,7 +141,7 @@ export default {
         title: " ",
       },
       sharing: {
-        url: process.env.baseUrl + this.$route.fullPath,
+        url: "https://www.precastnaija.com" + this.$route.fullPath,
         title: "",
         description: "",
         quote: "",
