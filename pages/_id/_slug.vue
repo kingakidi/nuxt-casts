@@ -65,10 +65,10 @@
                   quote="Precastnaija"
                   hashtags="precastnaija"
                 >
-                  <font-awesome-icon
+                  <!-- <font-awesome-icon
                     :icon="network.icon"
                     class="text-white fa-fw fa-lg"
-                  />
+                  /> --> {{network.network}}
                 </ShareNetwork>
               </div>
             </div>
