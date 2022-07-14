@@ -53,7 +53,7 @@
               <div class="post-share-counts">
                 <span class="material-icons"> </span>
                 <!-- <span>1.2k</span> -->
-                Share on
+              
 
                 <ShareNetwork
                   v-for="network in networks"
