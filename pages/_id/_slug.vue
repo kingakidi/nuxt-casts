@@ -68,7 +68,8 @@
                   <!-- <font-awesome-icon
                     :icon="network.icon"
                     class="text-white fa-fw fa-lg"
-                  /> --> {{network.network}}
+                  /> -->
+                  <span> </span> {{ network.network }}
                 </ShareNetwork>
               </div>
             </div>
@@ -146,10 +147,9 @@ export default {
         description: "",
         quote: "",
         hashtags: "",
-        twitterUser: "zemna",
       },
       networks: [
-        { network: "facebook", icon: ["fab", "facebook-f"], color: "#1877f2" },
+        // { network: "facebook", icon: ["fab", "facebook-f"], color: "#1877f2" },
         // { network: "twitter", icon: ["fab", "twitter"], color: "#1da1f2" },
         // {
         //   network: "messenger",
