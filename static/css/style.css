@@ -412,7 +412,9 @@ footer {
 }
 
 .post-content img,
-iframe {
+iframe,
+.comment-text img,
+.comment-text iframe {
   max-width: 100%;
 }
 
