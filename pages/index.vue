@@ -51,6 +51,22 @@ import ListCategory from "~/components/CategoryComponent/ListCategory.vue";
 import { mapState } from "vuex";
 export default {
   name: "IndexPage",
+  head() {
+    return {
+      title: "Precast Naija",
+
+      meta: [
+        {
+          hid: "#1",
+          name: "Precast Naija",
+          description: "Your #1 Information center",
+          content:
+            "Precast Naija is a platform for all kind of information, from Breaking News, Recent Happening, ICT, Sport, Hangout and many more, signup on the platform and let your voice be heard",
+        },
+      ],
+    };
+  },
+
   components: {
     StatsNav,
     ShowAds,

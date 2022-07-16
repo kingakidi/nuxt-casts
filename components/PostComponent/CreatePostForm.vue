@@ -42,7 +42,7 @@
             </client-only>
           </div>
         </div>
-        <div class="cast-form-group" v-show="false">
+        <div class="cast-form-group">
           <label for="file">Select Image</label>
           <input
             type="file"

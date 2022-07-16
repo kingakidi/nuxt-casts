@@ -31,9 +31,15 @@
               {{ $moment(thisPost.created_at).format("LLLL") }}
             </div>
           </h4>
-          <div class="post-content" v-html="thisPost.content">
-            <!-- {{ thisPost.content }} -->
+          <div class="post-content">
+            <div v-html="thisPost.content">
+              <!-- {{ thisPost.content }} -->
+            </div>
+            <div>
+              <img v-if="post_image_url" :src="post_image_url" />
+            </div>
           </div>
+
           <div class="display-reactions">
             <div class="reaction-icons">
               <div class="post-likes-counts">
@@ -53,7 +59,6 @@
               <div class="post-share-counts">
                 <span class="material-icons"> </span>
                 <!-- <span>1.2k</span> -->
-              
 
                 <ShareNetwork
                   v-for="network in networks"
@@ -69,7 +74,10 @@
                     :icon="network.icon"
                     class="text-white fa-fw fa-lg"
                   /> -->
-                  <span> </span> {{ network.network }}
+                  <span id="whatsapp-icon" class="material-icons-outlined">
+                    whatsapp
+                  </span>
+                  <!-- <span> </span> {{ network.network }} -->
                 </ShareNetwork>
               </div>
             </div>
@@ -189,7 +197,7 @@ export default {
   },
   asyncData({ $axios, params }) {
     return $axios.get(`/post/${params.id}`).then((res) => {
-      return { thisPost: res.data.post[0] };
+      return { thisPost: res.data.post[0], post_image_url: res.data.image_url };
     });
   },
   methods: {

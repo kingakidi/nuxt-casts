@@ -364,7 +364,9 @@ footer {
   font-size: 14px;
 }
 /* SINGLE POST  */
-
+#whatsapp-icon {
+  border: 1px solid #25d366;
+}
 .display-post {
   background-color: #fff;
 
@@ -374,6 +376,7 @@ footer {
   border-top-right-radius: 20px;
   border-bottom-left-radius: 20px;
   width: 98%;
+  overflow: hidden;
 }
 
 .precast-title {
@@ -405,6 +408,7 @@ footer {
   margin: 15px 0px;
 }
 .post-content {
+  color: #000;
   text-align: justify;
   padding-bottom: 15px;
   margin: 20px 20px 0px 20px;
